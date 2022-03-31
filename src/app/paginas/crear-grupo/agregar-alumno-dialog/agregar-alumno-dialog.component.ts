@@ -1,4 +1,4 @@
-import { Component, OnInit, Inject } from '@angular/core';
+import { Component, OnInit, Inject, ViewChild } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { FormBuilder, FormGroup, Validators, AbstractControl } from '@angular/forms';
 import { MatDialog, MatTabGroup } from '@angular/material';
@@ -10,8 +10,8 @@ import { Location } from '@angular/common';
 // Clases
 import { Grupo, Alumno, Matricula } from '../../../clases/index';
 import {MatTableDataSource} from '@angular/material/table';
-import { DialogoConfirmacionComponent } from '../../COMPARTIDO/dialogo-confirmacion/dialogo-confirmacion.component';
 
+import {MatSort} from '@angular/material/sort';
 
 @Component({
   selector: 'app-agregar-alumno-dialog',
@@ -21,7 +21,7 @@ import { DialogoConfirmacionComponent } from '../../COMPARTIDO/dialogo-confirmac
 export class AgregarAlumnoDialogComponent implements OnInit {
 
   // PONEMOS LAS COLUMNAS DE LA TABLA Y LA LISTA QUE TENDRÁ LA INFORMACIÓN QUE QUEREMOS MOSTRAR (alumnosEquipo) y (alumnosAsignables)
-  displayedColumnsMisAlumnos: string[] = ['nombre', 'primerApellido', 'segundoApellido', ' '];
+  displayedColumnsMisAlumnos: string[] = ['Nombre', 'PrimerApellido', 'SegundoApellido', ' '];
   dataSourceMisAlumnos;
   misAlumnos: Alumno[] = [];
 
@@ -42,6 +42,7 @@ export class AgregarAlumnoDialogComponent implements OnInit {
               public dialogRef: MatDialogRef<AgregarAlumnoDialogComponent>,
               @Inject(MAT_DIALOG_DATA) public data: any) { }
 
+  @ViewChild(MatSort) sort: MatSort;
   ngOnInit() {
 
     // Recogemos los datos que le pasamos desde el componente que nos llama
@@ -57,7 +58,10 @@ export class AgregarAlumnoDialogComponent implements OnInit {
                           this.misAlumnos.sort((a, b) => a.PrimerApellido.localeCompare(b.PrimerApellido));
 
                           this.dataSourceMisAlumnos = new MatTableDataSource (this.misAlumnos);
-
+                          setTimeout(() => {
+                            console.log ('aaaa ', this.sort)
+                            this.dataSourceMisAlumnos.sort = this.sort;
+                          });
                         }
     );
 
@@ -68,22 +72,20 @@ export class AgregarAlumnoDialogComponent implements OnInit {
 
                           this.dataSourceAlumnosDelGrupo = new MatTableDataSource (this.alumnosDelGrupo);
 
-                          // Ahora vamos a por todos los alumnos del profesor
-                          this.peticionesAPI.DameTodosMisAlumnos (this.profesorId )
-                          .subscribe ( alumnos => {
+                          // // Ahora vamos a por todos los alumnos del profesor
+                          // this.peticionesAPI.DameTodosMisAlumnos (this.profesorId )
+                          // .subscribe ( alumnos => {
                             // Me quedo solo con los alumnos del profesor que no están ya en elgrupo
-                            this.misAlumnos = alumnos.filter (al => !this.alumnosDelGrupo.some (a => a.id === al.id));
+                          //   this.misAlumnos = alumnos.filter (al => !this.alumnosDelGrupo.some (a => a.id === al.id));
 
-                            this.misAlumnos.sort((a, b) => a.PrimerApellido.localeCompare(b.PrimerApellido));
+                          //   this.misAlumnos.sort((a, b) => a.PrimerApellido.localeCompare(b.PrimerApellido));
 
-                            this.dataSourceMisAlumnos = new MatTableDataSource (this.misAlumnos);
+                          //   this.dataSourceMisAlumnos = new MatTableDataSource (this.misAlumnos);
+                          //   this.dataSourceMisAlumnos.sort = this.sort;
 
-                          }
-    );
-
-
-                        }
-    );
+                          // }
+                       // )};
+  });
 
   }
 
@@ -116,7 +118,6 @@ export class AgregarAlumnoDialogComponent implements OnInit {
       this.misAlumnos = this.misAlumnos.filter (a => a.id !== alumno.id);
 
       this.dataSourceMisAlumnos = new MatTableDataSource (this.misAlumnos);
-
     } else {
       Swal.fire('Cuidado', 'Este alumno ya está en el grupo', 'error');
 

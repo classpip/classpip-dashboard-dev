@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router} from '@angular/router';
 import { Location } from '@angular/common';
 
@@ -7,6 +7,9 @@ import { SesionService, PeticionesAPIService, CalculosService } from '../../serv
 
 // Clases
 import { Grupo, Profesor } from '../../clases/index';
+
+import {MatSort} from '@angular/material/sort';
+import {MatTableDataSource} from '@angular/material/table';
 
 
 @Component({
@@ -19,7 +22,7 @@ import { Grupo, Profesor } from '../../clases/index';
 export class MisGruposComponent implements OnInit {
 
   // PONEMOS LAS COLUMNAS DE LA TABLA Y LA LISTA QUE TENDRÁ LA INFORMACIÓN QUE QUEREMOS MOSTRAR
-  displayedColumns: string[] = ['nombre', 'descripcion'];
+  displayedColumns: string[] = ['Nombre', 'Descripcion'];
   listaGrupos: Grupo[];
 
   // LO USAREMOS PARA EL ROUTE AL SIGUIENTE COMPONENTE
@@ -32,6 +35,8 @@ export class MisGruposComponent implements OnInit {
 
   gruposObservable: any;
 
+  dataSource;
+
 
   constructor(private route: ActivatedRoute,
               private router: Router,
@@ -39,6 +44,7 @@ export class MisGruposComponent implements OnInit {
               private sesion: SesionService,
               private peticionesAPI: PeticionesAPIService) { }
 
+  @ViewChild(MatSort) sort: MatSort;
   ngOnInit() {
 
     // tslint:disable-next-line:no-string-literal
@@ -54,6 +60,10 @@ export class MisGruposComponent implements OnInit {
     .subscribe(res => {
       if (res[0] !== undefined) {
         this.listaGrupos = res;
+        this.dataSource = new MatTableDataSource (this.listaGrupos);
+        setTimeout(() => {
+          this.dataSource.sort = this.sort; 
+        })
       } else {
         this.listaGrupos = undefined;
       }
