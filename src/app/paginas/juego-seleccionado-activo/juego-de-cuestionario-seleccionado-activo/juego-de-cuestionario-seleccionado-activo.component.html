@@ -39,9 +39,9 @@
 
               <!-- Puntos Column -->
               <ng-container matColumnDef="nota">
-                  <th mat-header-cell *matHeaderCellDef class="tituloColumnaTabla">Nota</th>
+                  <th mat-header-cell *matHeaderCellDef class="tituloColumnaTabla">Nota <span style = "color: red; font-size:small">(tiempo)</span></th>
                   <td mat-cell  *matCellDef="let alumno">
-                    <span *ngIf = "alumno.contestado"  style = "color: green;">{{alumno.nota}} </span>
+                    <span *ngIf = "alumno.contestado"  style = "color: green;">{{alumno.nota}} <span style = "color: red; font-size:small">{{alumno.tiempoEmpleado}}</span> </span>
                   </td>
               </ng-container>
  
@@ -252,6 +252,50 @@
                               <tr mat-row *matRowDef="let row; columns: displayedColumnsKahoot;"></tr>
       
                     </table>
+                  </div>
+                  <div>
+                              <!-- Muestra la pregunta -->
+                  <div *ngIf ="preguntaAMostrar.Tipo === 'Cuatro opciones'" class = "enColumna">
+      
+                    <img *ngIf = "preguntaAMostrar.Imagen" style = "width: 500px; height: 500px" [src]="imagenPreguntaAMostrar" >
+                    <p style="font-size: 60px;">{{preguntaAMostrar.Pregunta}}</p>
+                    <div class = "enColumna">
+                      <div class = "enFila">
+                        <div style = "background-color: red; width:40%; padding: 5%; color: white" >{{opcionesDesordenadas[0]}}</div>
+                        <div style = "background-color:green; width:40%; padding: 5%; color: white;">{{opcionesDesordenadas[1]}}</div>
+                      </div>
+                      <div class = "enFila">
+                        <div style = "background-color: blue; width:40%; padding: 5%; color: white">{{opcionesDesordenadas[2]}}</div>
+                        <div style = "background-color:yellow; width:40%; padding: 5%;" >{{opcionesDesordenadas[3]}}</div>
+                      </div>
+                    </div>
+      
+                  </div>
+                  <div *ngIf ="preguntaAMostrar.Tipo === 'Verdadero o falso'" class = "enColumna">
+      
+                    <img *ngIf = "preguntaAMostrar.Imagen" style = "width: 500px; height: 500px" [src]="imagenPreguntaAMostrar" >
+                    <p style="font-size: 60px;">{{preguntaAMostrar.Pregunta}}</p>
+                    <div class = "enColumna">
+                      <div class = "enFila">
+                        <div style = "background-color: red; width:40%; padding: 5%; color: white; text-align: center;" >Falso</div>
+                        <div style = "background-color:green; width:40%; padding: 5%; color: white;text-align: center;">Verdadero</div>
+                      </div>
+                    </div>
+      
+                  </div>
+                  <div *ngIf ="preguntaAMostrar.Tipo === 'Respuesta abierta'" class = "enColumna">
+      
+                    <img *ngIf = "preguntaAMostrar.Imagen" style = "width: 500px; height: 500px" [src]="imagenPreguntaAMostrar" >
+                    <p style="font-size: 60px;">{{preguntaAMostrar.Pregunta}}</p>
+                    <br>
+                    <p style="font-size: 30px;">Escribe tu respuesta</p>
+                  </div>
+                  <div *ngIf ="preguntaAMostrar.Tipo === 'Emparejamiento'" class = "enColumna">
+      
+                    <img *ngIf = "preguntaAMostrar.Imagen" style = "width: 500px; height: 500px" [src]="imagenPreguntaAMostrar" >
+                    <p style="font-size: 60px;">{{preguntaAMostrar.Pregunta}}</p>
+                    <br>
+                  </div>
                   </div>
       
                   <div style = "width: 50%; ">
