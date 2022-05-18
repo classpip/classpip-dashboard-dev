@@ -1,3 +1,4 @@
+import { EquipoJuegoDeVotacionTodosAUno } from 'src/app/clases/EquipoJuegoDeVotacionTodosAUno';
 import { Injectable } from '@angular/core';
 import { SesionService } from './sesion.service';
 import { PeticionesAPIService } from './peticiones-api.service';
@@ -396,14 +397,13 @@ public async EliminarJuegoDeVotacionTodosAUno(juego: any) {
       await this.peticionesAPI.BorraInscripcionAlumnoJuegoDeVotacionTodosAUno (inscripciones[i].id).toPromise();
     }
   } else {
-    // AUN NO ES POSIBLE LA MODALIDAD DE EQUIPO EN ESTE JUEGO. CUANDO ESTÉ IMPLEMENTADA ENTONCES
-    // ESTE SERÁ EL CÓDIGO PARA ELIMINAR
-    // inscripciones = await this.peticionesAPI.DameInscripcionesEquiposJuegoDeVotacionTodosAUno(juego.id).toPromise();
 
-    // // tslint:disable-next-line:prefer-for-of
-    // for (let i = 0; i < inscripciones.length ; i++ ) {
-    //   await this.peticionesAPI.BorraInscripcionEquipoJuegoDeVotacionTodosAUno (inscripciones[i].id).toPromise();
-    // }
+    inscripciones = await this.peticionesAPI.DameInscripcionesEquipoJuegoDeVotacionTodosAUno(juego.id).toPromise();
+
+    // tslint:disable-next-line:prefer-for-of
+    for (let i = 0; i < inscripciones.length ; i++ ) {
+      await this.peticionesAPI.BorraInscripcionEquipoJuegoDeVotacionTodosAUno (inscripciones[i].id).toPromise();
+    }
   }
   await this.peticionesAPI.BorraJuegoDeVotacionTodosAUno (juego.id).toPromise();
 }
