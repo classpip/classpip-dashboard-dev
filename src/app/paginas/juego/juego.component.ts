@@ -1,3 +1,4 @@
+import { EquipoJuegoDeVotacionTodosAUno } from './../../clases/EquipoJuegoDeVotacionTodosAUno';
 import { Component, OnInit, ViewChild, Input } from '@angular/core';
 import { ThemePalette } from '@angular/material/core';
 import { SelectionModel } from '@angular/cdk/collections';
@@ -2657,7 +2658,7 @@ export class JuegoComponent implements OnInit {
               new AlumnoJuegoDeVotacionTodosAUno(this.alumnosGrupo[i].id, this.juego.id))
               .subscribe();
           }
-        }/*else {
+        }else {
           console.log ('voy a inscribir a los equipos ', this.equiposGrupo);
           // tslint:disable-next-line:prefer-for-of
           for (let i = 0; i < this.equiposGrupo.length; i++) {
@@ -2667,7 +2668,7 @@ export class JuegoComponent implements OnInit {
                 new EquipoJuegoDeVotacionTodosAUno(this.equiposGrupo[i].id, this.juego.id))
             .subscribe();
           }
-      }*/
+      }
 
         Swal.fire('Juego de votación tipo Todos A Uno creado correctamente', ' ', 'success');
 

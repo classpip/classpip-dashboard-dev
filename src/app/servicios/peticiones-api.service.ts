@@ -28,6 +28,7 @@ import {AlumnoJuegoEvaluado} from '../clases/AlumnoJuegoEvaluado';
 import * as URL from '../URLs/urls';
 import { RecursoCuento } from '../clases/clasesParaJuegoDeCuentos/RecursoCuento';
 import { EquipoJuegoDeVotacionUnoATodos } from '../clases/EquipoJuegoDeVotacionUnoATodos';
+import { EquipoJuegoDeVotacionTodosAUno } from '../clases/EquipoJuegoDeVotacionTodosAUno'
 import { RespuestaEquipoJuegoDeCuestionario } from '../clases/RespuestaEquipoJuegoDeCuestionario';
 import { AlumnoJuegoDeEvaluacion } from '../clases/AlumnoJuegoDeEvaluacion';
 import { EquipoJuegoDeEvaluacion } from '../clases/EquipoJuegoDeEvaluacion';
@@ -146,6 +147,7 @@ export class PeticionesAPIService {
 
   private APIUrlJuegoDeVotacionTodosAUno = this.host + ':3000/api/JuegosDeVotacionTodosAUno';
   private APIUrlAlumnoJuegoDeVotacionTodosAUno = this.host + ':3000/api/alumnosJuegoDeVotacionTodosAUno';
+  private APIUrlEquipoJuegoDeVotacionTodosAUno = this.host + ':3000/api/equiposJuegoDeVotacionTodosAUno';
 
   private APIUrlJuegoDeVotacionAOpciones = this.host + ':3000/api/JuegosDeVotacionAOpciones';
   private APIUrlAlumnoJuegoDeVotacionAOpciones = this.host + ':3000/api/alumnosJuegoDeVotacionAOpciones';
@@ -1848,6 +1850,35 @@ public ModificaInscripcionEquipoJuegoDeVotacionUnoATodos(inscripcion: EquipoJueg
   // tslint:disable-next-line:max-line-length
   public ModificaInscripcionAlumnoJuegoDeVotacionTodosAUno(inscripcion: AlumnoJuegoDeVotacionTodosAUno): Observable<AlumnoJuegoDeVotacionTodosAUno> {
     return this.http.put<AlumnoJuegoDeVotacionTodosAUno>(this.APIUrlAlumnoJuegoDeVotacionTodosAUno + '/' + inscripcion.id, inscripcion);
+  }
+
+  ////////////////////////////////// GESTION VOTACION TODOS A UNO EQUIPOS /////////////////////////////////////////////////////////
+
+  public DameEquiposJuegoDeVotacionTodosAUno(juegoId: number): Observable<Equipo[]> {
+    return this.http.get<Equipo[]>(this.APIUrlJuegoDeVotacionTodosAUno + '/' + juegoId + '/equipos');
+  }
+
+  public InscribeEquipoJuegoDeVotacionTodosAUno(equipoJuegoDeVotacionTodosAUno: EquipoJuegoDeVotacionTodosAUno) {
+    return this.http.post<EquipoJuegoDeVotacionTodosAUno>(this.APIUrlEquipoJuegoDeVotacionTodosAUno,
+      equipoJuegoDeVotacionTodosAUno);
+  }
+
+
+  // tslint:disable-next-line:max-line-length
+  public DameInscripcionesEquipoJuegoDeVotacionTodosAUno(juegoId: number): Observable<EquipoJuegoDeVotacionTodosAUno[]> {
+    return this.http.get<EquipoJuegoDeVotacionTodosAUno[]>(this.APIUrlEquipoJuegoDeVotacionTodosAUno
+      + '?filter[where][juegoDeVotacionTodosAUnoId]=' + juegoId);
+  }
+
+  public BorraInscripcionEquipoJuegoDeVotacionTodosAUno(equipoJuegoDeVotacionTodosAUnoId: number) {
+    // tslint:disable-next-line:max-line-length
+    return this.http.delete<EquipoJuegoDeVotacionTodosAUno>(this.APIUrlEquipoJuegoDeVotacionTodosAUno + '/' + equipoJuegoDeVotacionTodosAUnoId);
+  }
+
+
+  // tslint:disable-next-line:max-line-length
+  public ModificaInscripcionEquipoJuegoDeVotacionTodosAUno(inscripcion: EquipoJuegoDeVotacionTodosAUno): Observable<EquipoJuegoDeVotacionTodosAUno> {
+    return this.http.put<EquipoJuegoDeVotacionTodosAUno>(this.APIUrlEquipoJuegoDeVotacionTodosAUno + '/' + inscripcion.id, inscripcion);
   }
 
 
