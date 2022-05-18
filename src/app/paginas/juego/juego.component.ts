@@ -2445,7 +2445,7 @@ export class JuegoComponent implements OnInit {
 
   TipoDeVotacionSeleccionado(tipoVotacion: ChipColor) {
     // tslint:disable-next-line:max-line-length
-    if ((this.modoDeJuegoSeleccionado === 'Equipos') && ((tipoVotacion.nombre === 'Todos A Uno') || (tipoVotacion.nombre === 'Votar opciones'))) {
+    if ((this.modoDeJuegoSeleccionado === 'Equipos') &&  (tipoVotacion.nombre === 'Votar opciones')) {
       Swal.fire('Alerta', 'Aún no es posible ete tipo de juego de votación en EQUIPO', 'warning');
     } else {
       this.tipoDeVotacionSeleccionado = tipoVotacion.nombre;
@@ -2621,7 +2621,8 @@ export class JuegoComponent implements OnInit {
       this.pesos,
       this.nombreDelJuego,
       false,
-      this.grupo.id);
+      this.grupo.id,
+      this.votanEquipos);
     console.log('voy a crear juego');
     console.log(juegoDeVotacion);
     this.peticionesAPI.CreaJuegoDeVotacionTodosAUno(juegoDeVotacion, this.grupo.id)
@@ -2656,7 +2657,17 @@ export class JuegoComponent implements OnInit {
               new AlumnoJuegoDeVotacionTodosAUno(this.alumnosGrupo[i].id, this.juego.id))
               .subscribe();
           }
-        }
+        }/*else {
+          console.log ('voy a inscribir a los equipos ', this.equiposGrupo);
+          // tslint:disable-next-line:prefer-for-of
+          for (let i = 0; i < this.equiposGrupo.length; i++) {
+            // tslint:disable-next-line:max-line-length
+            this.peticionesAPI.InscribeEquipoJuegoDeVotacionTodosAUno(
+              // tslint:disable-next-line:indent
+                new EquipoJuegoDeVotacionTodosAUno(this.equiposGrupo[i].id, this.juego.id))
+            .subscribe();
+          }
+      }*/
 
         Swal.fire('Juego de votación tipo Todos A Uno creado correctamente', ' ', 'success');
 
