@@ -26,12 +26,13 @@ export class JuegoDeVotacionTodosAUnoSeleccionadoActivoComponent implements OnIn
   rankingEquiposJuegoDeVotacionTodosAUno: TablaEquipoJuegoDeVotacionTodosAUno[] = [];
   datasourceAlumno;
   datasourceEquipo;
+  alumnosEquipo: Alumno[];
 
   // tslint:disable-next-line:max-line-length
   columnasListas = false;
-  
+
   displayedColumnsAlumnos: string[] = ['posicion', 'nombreAlumno', 'primerApellido', 'segundoApellido', 'votos',  'nota'];
-  displayedColumnsEquipos: string[] = ['posicion', 'nombreEquipo', 'miembros', 'puntos', 'incremento', 'cuantos'];
+  displayedColumnsEquipos: string[] = ['posicion', 'nombreEquipo', 'miembros', 'votos', 'nota', 'cuantos'];
 
   interval;
   alumnosQueYaHanVotado: Alumno[];
