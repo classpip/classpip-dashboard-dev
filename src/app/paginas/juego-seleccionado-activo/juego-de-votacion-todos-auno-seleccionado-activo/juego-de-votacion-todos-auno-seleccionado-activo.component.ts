@@ -1,10 +1,12 @@
+import { TablaEquipoJuegoDeVotacionTodosAUno } from './../../../clases/TablaEquipoJuegoDeVotacionTodosAUno';
+import { EquipoJuegoDeVotacionTodosAUno } from 'src/app/clases/EquipoJuegoDeVotacionTodosAUno';
 import { Component, OnInit } from '@angular/core';
 // Servicio
 import { SesionService, PeticionesAPIService, CalculosService, ComServerService } from '../../../servicios/index';
 import Swal from 'sweetalert2';
 // Clases
 import { TablaAlumnoJuegoDeVotacionTodosAUno} from '../../../clases/index';
-import {JuegoDeVotacionTodosAUno, Alumno, AlumnoJuegoDeVotacionTodosAUno} from '../../../clases/index';
+import {JuegoDeVotacionTodosAUno, Alumno,Equipo, AlumnoJuegoDeVotacionTodosAUno} from '../../../clases/index';
 import { MatTableDataSource } from '@angular/material/table';
 import { Location } from '@angular/common';
 import { Howl } from 'howler';
@@ -17,13 +19,26 @@ import { Howl } from 'howler';
 export class JuegoDeVotacionTodosAUnoSeleccionadoActivoComponent implements OnInit {
   juegoSeleccionado: any;
   alumnosDelJuego: Alumno[];
+  equiposDelJuego: Equipo[];
   listaAlumnosOrdenadaPorPuntos: AlumnoJuegoDeVotacionTodosAUno[];
+  listaEquiposOrdenadaPorPuntos: EquipoJuegoDeVotacionTodosAUno[];
   rankingIndividualJuegoDeVotacionTodosAUno: TablaAlumnoJuegoDeVotacionTodosAUno[] = [];
+  rankingEquiposJuegoDeVotacionTodosAUno: TablaEquipoJuegoDeVotacionTodosAUno[] = [];
   datasourceAlumno;
+  datasourceEquipo;
 
   // tslint:disable-next-line:max-line-length
-  displayedColumnsAlumnos: string[] = ['posicion', 'nombreAlumno', 'primerApellido', 'segundoApellido', 'votos',  'nota'];
   columnasListas = false;
+  
+  displayedColumnsAlumnos: string[] = ['posicion', 'nombreAlumno', 'primerApellido', 'segundoApellido', 'votos',  'nota'];
+  displayedColumnsEquipos: string[] = ['posicion', 'nombreEquipo', 'miembros', 'puntos', 'incremento', 'cuantos'];
+
+  interval;
+  alumnosQueYaHanVotado: Alumno[];
+  equiposQueYaHanVotado: number[];
+  equiposConMiembros: any;
+
+
 
   //  /** Table columns */
   //  columns = [
