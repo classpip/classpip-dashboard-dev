@@ -247,7 +247,6 @@ export class JuegoDeVotacionTodosAUnoSeleccionadoActivoComponent implements OnIn
 
   VotacionFinalizada() {
     // Miro si todos han votado
-    // Miro si todos han votado
     if (this.juegoSeleccionado.Modo === 'Individual') {
       let cont = 0;
       this.rankingIndividualJuegoDeVotacionTodosAUno.forEach (al => {if (al.votado) { cont++; } });
