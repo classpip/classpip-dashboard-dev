@@ -158,7 +158,7 @@ export class JuegoDeVotacionTodosAUnoSeleccionadoActivoComponent implements OnIn
       console.log(alumnosJuego);
       this.alumnosDelJuego = alumnosJuego;
       console.log ('Vamos a pos los equipos');
-      this.peticionesAPI.DameEquiposJuegoDeVotacionUnoATodos(this.juegoSeleccionado.id)
+      this.peticionesAPI.DameEquiposJuegoDeVotacionTodosAUno(this.juegoSeleccionado.id)
       .subscribe(equiposJuego => {
         console.log ('Ya tengo los equipos');
         console.log(equiposJuego);
