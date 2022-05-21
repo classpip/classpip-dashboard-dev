@@ -136,6 +136,11 @@ export class JuegoDeVotacionTodosAUnoSeleccionadoActivoComponent implements OnIn
 
   }
 
+
+  AlumnoHaVotado(alumno: Alumno) {
+    return this.alumnosQueYaHanVotado.some (al => al.id === alumno.id);
+  }
+  
   async AlumnosDelEquipo(equipo: Equipo) {
     console.log(equipo);
 
