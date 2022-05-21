@@ -247,7 +247,18 @@ export class JuegoDeVotacionTodosAUnoSeleccionadoActivoComponent implements OnIn
 
   VotacionFinalizada() {
     // Miro si todos han votado
-   return false;
+    // Miro si todos han votado
+    if (this.juegoSeleccionado.Modo === 'Individual') {
+      let cont = 0;
+      this.rankingIndividualJuegoDeVotacionTodosAUno.forEach (al => {if (al.votado) { cont++; } });
+      return (cont === this.rankingIndividualJuegoDeVotacionTodosAUno.length);
+    } else if (this.juegoSeleccionado.VotanEquipos) {
+      let cont = 0;
+      this.rankingEquiposJuegoDeVotacionTodosAUno.forEach (eq => {if (eq.votado) { cont++; } });
+      return (cont === this.rankingEquiposJuegoDeVotacionTodosAUno.length);
+    } else {
+      return (this.alumnosQueYaHanVotado.length === this.alumnosDelJuego.length);
+    }
   }
 
   DesactivarJuego() {
