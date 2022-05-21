@@ -4092,12 +4092,25 @@ if (juego.VotanEquipos){
   }
 }else if (!juego.VotanEquipos){
   for (let i = 0; i < listaEquiposOrdenadaPorPuntos.length; i++) {
-    if (listaEquiposOrdenadaPorPuntos[i].VotosEmitidosMiembro) {
+
+    if (listaEquiposOrdenadaPorPuntos[i].VotosEmitidos) {
       // Este equipo ha emitido algunos votos
-      
+      const equipo = listaEquiposOrdenadaPorPuntos[i];
+      // Asigno los puntos a los destinatorios
+      // tslint:disable-next-line:prefer-for-of
+      for (let j = 0; j < equipo.VotosEmitidos.length; j++) {
+        const votado = rankingJuegoDeVotacion.filter (eq => eq.id === equipo.VotosEmitidos[j].equipoId)[0];
+        const num = listaEquiposOrdenadaPorPuntos[i].VotosEmitidos.filter (eq => eq.id === listaEquiposOrdenadaPorPuntos[i].VotosEmitidos[j].equipoId).length;
+        console.log ("numero de votos por equipo" + num);
+        for (let t= 0; t < equipo.VotosEmitidos[j].votos.length; t++) {
+          votado.conceptos[j] = votado.conceptos[j] + equipo.VotosEmitidos[j].votos[t]/num;
+        }
+      }
+
+    }
     }
   }
-}
+
 
 
 // Para acabar calculo la nota parcial total  para cada alumno
