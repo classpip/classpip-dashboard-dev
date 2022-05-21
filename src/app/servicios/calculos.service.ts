@@ -4101,6 +4101,7 @@ if (juego.VotanEquipos){
       for (let j = 0; j < equipo.VotosEmitidos.length; j++) {
         const votado = rankingJuegoDeVotacion.filter (eq => eq.id === equipo.VotosEmitidos[j].equipoId)[0];
         const num = listaEquiposOrdenadaPorPuntos[i].VotosEmitidos.filter (eq => eq.id === listaEquiposOrdenadaPorPuntos[i].VotosEmitidos[j].equipoId).length;
+        votado.votosRecibidos= votado.votosRecibidos/num;
         console.log ("numero de votos por equipo" + num);
         for (let t= 0; t < equipo.VotosEmitidos[j].votos.length; t++) {
           votado.conceptos[j] = votado.conceptos[j] + equipo.VotosEmitidos[j].votos[t]/num;
@@ -4131,46 +4132,79 @@ equipo.nota = nota / equipo.votosRecibidos;
 return rankingJuegoDeVotacion;
 }
 
-public PrepararTablaRankingEquiposVotacionTodosAUnoAcabado(listaAlumnosOrdenadaPorPuntos: AlumnoJuegoDeVotacionTodosAUno[],
-// tslint:disable-next-line:max-line-length
-         alumnosDelJuego: Alumno[], juego: JuegoDeVotacionTodosAUno): TablaAlumnoJuegoDeVotacionTodosAUno[] {
-const rankingJuegoDeVotacion: TablaAlumnoJuegoDeVotacionTodosAUno [] = [];
-// tslint:disable-next-line:prefer-for-oF
-for (let i = 0; i < listaAlumnosOrdenadaPorPuntos.length; i++) {
-let alumno: Alumno;
-const alumnoId = listaAlumnosOrdenadaPorPuntos[i].alumnoId;
-alumno = alumnosDelJuego.filter(res => res.id === alumnoId)[0];
-// tslint:disable-next-line:max-line-length
-
-
-const elem = new TablaAlumnoJuegoDeVotacionTodosAUno(i + 1, alumno.Nombre, alumno.PrimerApellido, alumno.SegundoApellido,
-listaAlumnosOrdenadaPorPuntos[i].PuntosTotales, alumnoId);
-console.log ('elemento');
-console.log (elem);
-elem.conceptos = Array(juego.Conceptos.length).fill (0);
-rankingJuegoDeVotacion[i] = elem;
-}
-
-// Ahora para cada alumno voy a calcular los votos recibidos y la nota en cada uno de los conceptos
-
-// tslint:disable-next-line:prefer-for-of
-for (let i = 0; i < listaAlumnosOrdenadaPorPuntos.length; i++) {
-if (listaAlumnosOrdenadaPorPuntos[i].VotosEmitidos) {
-// Este alumno ha emitido algunos votos
-listaAlumnosOrdenadaPorPuntos[i].VotosEmitidos.forEach (votoEmitido => {
-// busco al alumno que ha recibido estos votos
-// tslint:disable-next-line:no-shadowed-variable
-const alumnoVotado = rankingJuegoDeVotacion.filter (alumno => alumno.id === votoEmitido.alumnoId)[0];
-alumnoVotado.votosRecibidos++;
-// le asigno los votos que ha recibido para cada concepto
-for (let j = 0; j < votoEmitido.votos.length; j++) {
-alumnoVotado.conceptos[j] = alumnoVotado.conceptos[j] + votoEmitido.votos[j];
-}
-
-});
-}
-}
-
+public PrepararTablaRankingEquiposVotacionTodosAUnoAcabado(listaEquiposOrdenadaPorPuntos: EquipoJuegoDeVotacionTodosAUno[],
+  // tslint:disable-next-line:max-line-length
+  equiposDelJuego: Equipo[], juego: JuegoDeVotacionTodosAUno): TablaEquipoJuegoDeVotacionTodosAUno[] {
+    const rankingJuegoDeVotacion: TablaEquipoJuegoDeVotacionTodosAUno [] = [];
+    // tslint:disable-next-line:prefer-for-oF
+    for (let i = 0; i < listaEquiposOrdenadaPorPuntos.length; i++) {
+      let equipo: Equipo;
+      const equipoId = listaEquiposOrdenadaPorPuntos[i].equipoId;
+      equipo = equiposDelJuego.filter(res => res.id === equipoId)[0];
+      // tslint:disable-next-line:max-line-length
+     
+      const elem = new TablaEquipoJuegoDeVotacionTodosAUno(i + 1, equipo.Nombre, 0, equipoId);
+      elem.votado = false;
+      let elem2: Alumno[];
+    
+      if (juego.VotanEquipos){
+        if (listaEquiposOrdenadaPorPuntos[i].VotosEmitidos.length>0){
+          elem.votado = true;
+        }
+      }else if(!juego.VotanEquipos){    
+        this.peticionesAPI.DameAlumnosEquipo(equipoId)
+        .subscribe(res =>{
+          elem2=res;
+          if (listaEquiposOrdenadaPorPuntos[i].VotosEmitidos.length === elem2.length){
+            elem.votado=true;
+          }
+        });
+      }
+      elem.conceptos = Array(juego.Conceptos.length).fill (0);
+      rankingJuegoDeVotacion[i] = elem;
+    }
+    
+    // Ahora para cada alumno voy a calcular los votos recibidos y la nota en cada uno de los conceptos, asi como su nota temporal
+    
+    // tslint:disable-next-line:prefer-for-of
+    if (juego.VotanEquipos){
+      for (let i = 0; i < listaEquiposOrdenadaPorPuntos.length; i++) {
+        if (listaEquiposOrdenadaPorPuntos[i].VotosEmitidos) {
+          // Este alumno ha emitido algunos votos
+          listaEquiposOrdenadaPorPuntos[i].VotosEmitidos.forEach (votoEmitido => {
+            // busco al alumno que ha recibido estos votos
+            // tslint:disable-next-line:no-shadowed-variable
+            const equipoVotado = rankingJuegoDeVotacion.filter (equipo => equipo.id === votoEmitido.equipoId)[0];
+            equipoVotado.votosRecibidos++;
+            // le asigno los votos que ha recibido para cada concepto
+            for (let j = 0; j < votoEmitido.votos.length; j++) {
+              equipoVotado.conceptos[j] = equipoVotado.conceptos[j] + votoEmitido.votos[j];
+            }
+      
+          });
+        }
+      }
+    }else if (!juego.VotanEquipos){
+      for (let i = 0; i < listaEquiposOrdenadaPorPuntos.length; i++) {
+    
+        if (listaEquiposOrdenadaPorPuntos[i].VotosEmitidos) {
+          // Este equipo ha emitido algunos votos
+          const equipo = listaEquiposOrdenadaPorPuntos[i];
+          // Asigno los puntos a los destinatorios
+          // tslint:disable-next-line:prefer-for-of
+          for (let j = 0; j < equipo.VotosEmitidos.length; j++) {
+            const votado = rankingJuegoDeVotacion.filter (eq => eq.id === equipo.VotosEmitidos[j].equipoId)[0];
+            const num = listaEquiposOrdenadaPorPuntos[i].VotosEmitidos.filter (eq => eq.id === listaEquiposOrdenadaPorPuntos[i].VotosEmitidos[j].equipoId).length;
+            votado.votosRecibidos= votado.votosRecibidos/num;
+            console.log ("numero de votos por equipo" + num);
+            for (let t= 0; t < equipo.VotosEmitidos[j].votos.length; t++) {
+              votado.conceptos[j] = votado.conceptos[j] + equipo.VotosEmitidos[j].votos[t]/num;
+            }
+          }
+    
+        }
+        }
+      }
 return rankingJuegoDeVotacion;
 }
 
