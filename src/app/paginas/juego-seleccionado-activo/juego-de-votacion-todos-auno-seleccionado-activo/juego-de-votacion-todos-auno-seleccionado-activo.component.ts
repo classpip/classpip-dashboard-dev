@@ -256,7 +256,7 @@ export class JuegoDeVotacionTodosAUnoSeleccionadoActivoComponent implements OnIn
       let cont = 0;
       this.rankingEquiposJuegoDeVotacionTodosAUno.forEach (eq => {if (eq.votado) { cont++; } });
       return (cont === this.rankingEquiposJuegoDeVotacionTodosAUno.length);
-    } else {
+    } else if (this.juegoSeleccionado.Modo === 'Equipos' && !this.juegoSeleccionado.VotanEquipos){
       return (this.alumnosQueYaHanVotado.length === this.alumnosDelJuego.length);
     }
   }
