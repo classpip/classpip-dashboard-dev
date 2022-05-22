@@ -289,12 +289,22 @@ export class JuegoDeVotacionTodosAUnoSeleccionadoActivoComponent implements OnIn
     }).then((result) => {
       if (result.value) {
         // Primero registro las puntuaciones definitivas de cada alumno
-        this.listaAlumnosOrdenadaPorPuntos.forEach (alumno => {
-          alumno.PuntosTotales = this.rankingIndividualJuegoDeVotacionTodosAUno.filter (al => al.id === alumno.alumnoId)[0].nota;
-          console.log ('actualizo');
-          console.log (alumno);
-          this.peticionesAPI.ModificaInscripcionAlumnoJuegoDeVotacionTodosAUno (alumno).subscribe();
-        });
+        if(this.juegoSeleccionado.Modo=='Indivual'){
+          this.listaAlumnosOrdenadaPorPuntos.forEach (alumno => {
+            alumno.PuntosTotales = this.rankingIndividualJuegoDeVotacionTodosAUno.filter (al => al.id === alumno.alumnoId)[0].nota;
+            console.log ('actualizo');
+            console.log (alumno);
+            this.peticionesAPI.ModificaInscripcionAlumnoJuegoDeVotacionTodosAUno (alumno).subscribe();
+          });
+        }else{
+          this.listaEquiposOrdenadaPorPuntos.forEach (equipo => {
+            equipo.PuntosTotales = this.rankingEquiposJuegoDeVotacionTodosAUno.filter (eq => eq.id === equipo.equipoId)[0].nota;
+            console.log ('actualizo');
+            console.log (equipo);
+            this.peticionesAPI.ModificaInscripcionEquipoJuegoDeVotacionTodosAUno (equipo).subscribe();
+          });
+
+        }
 
         this.juegoSeleccionado.JuegoActivo = false;
         this.peticionesAPI.CambiaEstadoJuegoDeVotacionTodosAUno (this.juegoSeleccionado)
