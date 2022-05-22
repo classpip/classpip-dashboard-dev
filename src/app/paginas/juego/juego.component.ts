@@ -2480,13 +2480,31 @@ export class JuegoComponent implements OnInit {
       this.autovotacion = false;
     }
     if (this.modoDeJuegoSeleccionado === 'Equipos') {
+      console.log("entramos quien vota");
       radio = document.getElementsByName('quien')[0] as HTMLInputElement;
+      console.log(radio);
       if (radio.checked ) {
         this.votanEquipos = true;
       } else {
         this.votanEquipos = false;
       }
+      console.log(this.votanEquipos);
     }
+
+  }
+
+  GuardarQuienVotaTodosAUno() {
+      console.log("entramos quien vota");
+      let radio = document.getElementsByName('quienTodosAUno')[0] as HTMLInputElement;
+      console.log(radio);
+      if (radio.checked ) {
+        this.votanEquipos = true;
+      } else {
+        this.votanEquipos = false;
+      }
+      console.log(this.votanEquipos);
+    
+
   }
 
   CrearJuegoDeVotacionUnoATodos() {

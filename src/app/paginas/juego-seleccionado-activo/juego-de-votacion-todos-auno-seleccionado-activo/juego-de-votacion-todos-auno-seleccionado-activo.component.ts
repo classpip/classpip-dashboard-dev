@@ -98,7 +98,6 @@ export class JuegoDeVotacionTodosAUnoSeleccionadoActivoComponent implements OnIn
       console.log (this.displayedColumnsEquipos);
       console.log ('conceptos');
       console.log (this.juegoSeleccionado.Conceptos);
-
     }
 
 
@@ -206,7 +205,7 @@ export class JuegoDeVotacionTodosAUnoSeleccionadoActivoComponent implements OnIn
     this.peticionesAPI.DameInscripcionesEquipoJuegoDeVotacionTodosAUno(this.juegoSeleccionado.id)
     .subscribe(inscripciones => {
       this.listaEquiposOrdenadaPorPuntos = inscripciones;
-      for(let i=0; i<this.listaEquiposOrdenadaPorPuntos.length; i++){
+      /*for(let i=0; i<this.listaEquiposOrdenadaPorPuntos.length; i++){
         if(this.listaEquiposOrdenadaPorPuntos[i]){
           for(let b=0; b<this.listaEquiposOrdenadaPorPuntos[i].VotosEmitidos[b].lenght; b++){
             var found =false;
@@ -218,7 +217,7 @@ export class JuegoDeVotacionTodosAUnoSeleccionadoActivoComponent implements OnIn
             }
           }
         }
-      }
+      }*/
       this.TablaClasificacionTotal();
     });
 
@@ -265,16 +264,25 @@ export class JuegoDeVotacionTodosAUnoSeleccionadoActivoComponent implements OnIn
 
   VotacionFinalizada() {
     // Miro si todos han votado
+    console.log('votacionfinalizada funcion');
+    console.log(this.juegoSeleccionado.Modo);
+    console.log(this.juegoSeleccionado.VotanEquipos);
+    console.log(this.juegoSeleccionado);
     if (this.juegoSeleccionado.Modo === 'Individual') {
       let cont = 0;
       this.rankingIndividualJuegoDeVotacionTodosAUno.forEach (al => {if (al.votado) { cont++; } });
+      console.log(cont === this.rankingIndividualJuegoDeVotacionTodosAUno.length);
       return (cont === this.rankingIndividualJuegoDeVotacionTodosAUno.length);
     } else if (this.juegoSeleccionado.VotanEquipos) {
       let cont = 0;
       this.rankingEquiposJuegoDeVotacionTodosAUno.forEach (eq => {if (eq.votado) { cont++; } });
+      console.log(cont === this.rankingEquiposJuegoDeVotacionTodosAUno.length);
       return (cont === this.rankingEquiposJuegoDeVotacionTodosAUno.length);
     } else if (this.juegoSeleccionado.Modo === 'Equipos' && !this.juegoSeleccionado.VotanEquipos){
+      console.log(this.alumnosQueYaHanVotado.length === this.alumnosDelJuego.length);
       return (this.alumnosQueYaHanVotado.length === this.alumnosDelJuego.length);
+    }else{
+      console.log('error');
     }
   }
 
@@ -303,7 +311,6 @@ export class JuegoDeVotacionTodosAUnoSeleccionadoActivoComponent implements OnIn
             console.log (equipo);
             this.peticionesAPI.ModificaInscripcionEquipoJuegoDeVotacionTodosAUno (equipo).subscribe();
           });
-
         }
 
         this.juegoSeleccionado.JuegoActivo = false;
