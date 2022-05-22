@@ -140,7 +140,7 @@ export class JuegoDeVotacionTodosAUnoSeleccionadoActivoComponent implements OnIn
   AlumnoHaVotado(alumno: Alumno) {
     return this.alumnosQueYaHanVotado.some (al => al.id === alumno.id);
   }
-  
+
   async AlumnosDelEquipo(equipo: Equipo) {
     console.log(equipo);
 
@@ -206,6 +206,19 @@ export class JuegoDeVotacionTodosAUnoSeleccionadoActivoComponent implements OnIn
     this.peticionesAPI.DameInscripcionesEquipoJuegoDeVotacionTodosAUno(this.juegoSeleccionado.id)
     .subscribe(inscripciones => {
       this.listaEquiposOrdenadaPorPuntos = inscripciones;
+      for(let i=0; i<this.listaEquiposOrdenadaPorPuntos.length; i++){
+        if(this.listaEquiposOrdenadaPorPuntos[i]){
+          for(let b=0; b<this.listaEquiposOrdenadaPorPuntos[i].VotosEmitidos[b].lenght; b++){
+            var found =false;
+            for (let c=0; c<this.alumnosDelJuego.length && !found; c++){
+              if (this.listaEquiposOrdenadaPorPuntos[i].VotosEmitidos[b].id === this.alumnosDelJuego[c].id){
+                found=true;
+                this.alumnosQueYaHanVotado.push(this.alumnosDelJuego[c]);
+              }
+            }
+          }
+        }
+      }
       this.TablaClasificacionTotal();
     });
 
@@ -300,7 +313,7 @@ export class JuegoDeVotacionTodosAUnoSeleccionadoActivoComponent implements OnIn
   CuantosHanVotadoDelEquipo (equipo: Equipo): string {
     // Hay que contar cuantos alumnos del equipo están en la lista de los que ya han votado
     // Primero vemos si todas las listas implicadas están preparadas
-    if (this.equiposConMiembros && this.alumnosQueYaHanVotado && this.equiposConMiembros) {
+    if (this.equiposConMiembros && this.alumnosQueYaHanVotado) {
       const alumnosDelEquipo = this.equiposConMiembros.filter (eq => eq.equipo.id === equipo.id)[0].miembros;
       console.log ('equipo ', equipo);
       console.log ('alumnos del equipo ', alumnosDelEquipo);
