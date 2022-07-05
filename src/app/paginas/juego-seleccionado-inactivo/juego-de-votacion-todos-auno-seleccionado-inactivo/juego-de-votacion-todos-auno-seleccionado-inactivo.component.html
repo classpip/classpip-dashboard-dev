@@ -85,6 +85,84 @@
     </table>
 
   </form>
-  </div>
+
+  <!-- ////////////////////////////////////// CLASIFICACIÓN EQUIPOS ////////////////////////////////////////////////////-->
+    
+  <form style="width: 100%"  *ngIf="juegoSeleccionado.Modo === 'Equipos'">
+    <div class="filter"  style="width: 60%">
+      <mat-form-field style="width: 95% !Important;">
+        <input matInput (keyup)="applyFilter($event.target.value)"  placeholder="Filtro para buscar equipo...">
+        <i class="material-icons" matSuffix>search</i>
+      </mat-form-field>
+    </div>
+
+    <table style="width: 120%"  align="center"  mat-table [dataSource]="dataSourceEquipo" class="example-container mat-elevation-z8">
+
+
+      <!-- Posición Column -->
+      <ng-container matColumnDef="posicion">
+  <th mat-header-cell *matHeaderCellDef class="tituloColumnaTabla">Pos</th>
+  <td mat-cell *matCellDef="let equipo; let i = index">
+    <div>{{i+1}}</div>
+  </td>
+      </ng-container>
+
+      <!-- Nombre Equipo Column -->
+      <ng-container matColumnDef="nombreEquipo">
+        <th mat-header-cell *matHeaderCellDef class="tituloColumnaTabla">Nombre</th>
+        <td mat-cell *matCellDef="let equipo; let i = index">
+          <div>{{equipo.nombre}}</div>
+        </td>
+      </ng-container>
+        <!-- Miembros Column -->
+      <ng-container matColumnDef="miembros">
+        <th mat-header-cell *matHeaderCellDef class="tituloColumnaTabla"> Miembros </th>
+        <td mat-cell *matCellDef="let equipo"><button mat-icon-button matTooltip="Ver miembros de {{equipo.nombre}}" color="primary"
+          [mdePopoverTriggerFor]="appPopover" (click) = "AlumnosDelEquipo(equipo)"
+          mdePopoverTriggerOn="click" #popoverTrigger="mdePopoverTrigger">
+          <i class="material-icons">group</i>
+        </button>
+
+        <mde-popover #appPopover="mdePopover" [mdePopoverOverlapTrigger]="false">
+            <mat-card style="max-width: 300px">
+              <mat-card-content>
+                  <mat-list-item *ngFor="let alumno of alumnosEquipo">
+                    <p class="md-body-1" mat-line>{{alumno.Nombre}} {{alumno.PrimerApellido}} {{alumno.SegundoApellido}}</p>
+                  </mat-list-item>
+              </mat-card-content>
+            </mat-card>
+        </mde-popover>
+      </td>
+      </ng-container>
+
+      <ng-container matColumnDef="nota">
+          <th mat-header-cell *matHeaderCellDef class="tituloColumnaTabla"  style="width: 15%"  align="center">Nota</th>
+          <td mat-cell *matCellDef="let equipo; let i = index">
+            <div >{{(equipo.nota).toFixed(2)}}</div>
+          </td>
+      </ng-container>
+
+      <!-- El desglose por conceptos solo lo muestro si hay más de un concepto -->
+      <div *ngIf = "juegoSeleccionado.Conceptos.length > 1">
+      <ng-container *ngFor = 'let concepto of juegoSeleccionado.Conceptos; let j=index' matColumnDef={{concepto}}>
+        <th mat-header-cell *matHeaderCellDef class="tituloColumnaTabla"  style="width: 10%"  align="center">{{concepto}}</th>
+        <td mat-cell *matCellDef="let equipo; let i = index">
+          <div *ngIf = "equipo.votosRecibidos !== 0">
+            <div >{{(equipo.conceptos[j]/ equipo.votosRecibidos).toFixed(2)}}</div>
+          </div>
+          <div *ngIf = "equipo.votosRecibidos === 0">
+            <div >0</div>
+          </div>
+        </td>
+      </ng-container>
+      </div>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumnsEquipos; sticky: true"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumnsEquipos;"></tr>
+
+    </table>
+
+    </form>
+   </div>
 </div>
 

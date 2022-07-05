@@ -407,6 +407,7 @@ public async EliminarJuegoDeVotacionTodosAUno(juego: any) {
   }
   await this.peticionesAPI.BorraJuegoDeVotacionTodosAUno (juego.id).toPromise();
 }
+
 public async EliminarJuegoDeVotacionAOpciones(juego: any) {
   let inscripciones;
   if (juego.Modo === 'Individual') {

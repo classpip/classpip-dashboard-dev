@@ -32,7 +32,7 @@ export class JuegoDeVotacionTodosAUnoSeleccionadoActivoComponent implements OnIn
   columnasListas = false;
 
   displayedColumnsAlumnos: string[] = ['posicion', 'nombreAlumno', 'primerApellido', 'segundoApellido', 'votos',  'nota'];
-  displayedColumnsEquipos: string[] = ['posicion', 'nombreEquipo', 'miembros', 'votos', 'nota', 'cuantos'];
+  displayedColumnsEquipos: string[] = ['posicion', 'nombreEquipo', 'miembros', 'nota', 'votos', 'cuantos'];
 
   interval;
   alumnosQueYaHanVotado: Alumno[];
@@ -349,8 +349,11 @@ export class JuegoDeVotacionTodosAUnoSeleccionadoActivoComponent implements OnIn
   }
 
   applyFilter(filterValue: string) {
-    this.datasourceAlumno.filter = filterValue.trim().toLowerCase();
-    this.datasourceEquipo.filter = filterValue.trim().toLowerCase();
+    if(this.juegoSeleccionado.Modo== 'Individual'){
+      this.datasourceAlumno.filter = filterValue.trim().toLowerCase();
+    }else{
+      this.datasourceEquipo.filter = filterValue.trim().toLowerCase();
+    }
   }
 
 }
