@@ -18,7 +18,7 @@ import { Howl } from 'howler';
 })
 export class JuegoDeVotacionTodosAUnoSeleccionadoActivoComponent implements OnInit {
   juegoSeleccionado: any;
-  alumnosDelJuego: Alumno[];
+  alumnosDelJuego: Alumno[]=[];
   equiposDelJuego: Equipo[];
   listaAlumnosOrdenadaPorPuntos: AlumnoJuegoDeVotacionTodosAUno[];
   listaEquiposOrdenadaPorPuntos: EquipoJuegoDeVotacionTodosAUno[];
@@ -35,8 +35,8 @@ export class JuegoDeVotacionTodosAUnoSeleccionadoActivoComponent implements OnIn
   displayedColumnsEquipos: string[] = ['posicion', 'nombreEquipo', 'miembros', 'nota', 'votos', 'cuantos'];
 
   interval;
-  alumnosQueYaHanVotado: Alumno[];
-  equiposQueYaHanVotado: number[];
+  alumnosQueYaHanVotado: Alumno[]=[];
+  equiposQueYaHanVotado: number[]=[];
   equiposConMiembros: any;
 
 
@@ -91,7 +91,7 @@ export class JuegoDeVotacionTodosAUnoSeleccionadoActivoComponent implements OnIn
         // la nota final y no la nota del concepto, que es la misma que la nota final.
         this.juegoSeleccionado.Conceptos.forEach (concepto => this.displayedColumnsEquipos.push (concepto));
       }
-      this.displayedColumnsEquipos.push (' ');
+      //this.displayedColumnsEquipos.push (' ');
   
       this.columnasListas = true;
       console.log ('columnas');
@@ -277,8 +277,10 @@ export class JuegoDeVotacionTodosAUnoSeleccionadoActivoComponent implements OnIn
       let cont = 0;
       this.rankingEquiposJuegoDeVotacionTodosAUno.forEach (eq => {if (eq.votado) { cont++; } });
       console.log(cont === this.rankingEquiposJuegoDeVotacionTodosAUno.length);
+      console.log("No votan equipos");
       return (cont === this.rankingEquiposJuegoDeVotacionTodosAUno.length);
     } else if (this.juegoSeleccionado.Modo === 'Equipos' && !this.juegoSeleccionado.VotanEquipos){
+      console.log("Votan Equipos");
       console.log(this.alumnosQueYaHanVotado.length === this.alumnosDelJuego.length);
       return (this.alumnosQueYaHanVotado.length === this.alumnosDelJuego.length);
     }else{
