@@ -209,6 +209,8 @@
           <th mat-header-cell *matHeaderCellDef class="tituloColumnaTabla">han votado...</th>
           <td mat-cell  *matCellDef="let equipo">
             <p style = "color: green;"> {{CuantosHanVotadoDelEquipo(equipo)}}</p>
+            <p *ngIf = "equipo.votado" style = "color: green;">
+              <i class="material-icons green md-36">done</i> </p>
           </td>
         </ng-container>
 

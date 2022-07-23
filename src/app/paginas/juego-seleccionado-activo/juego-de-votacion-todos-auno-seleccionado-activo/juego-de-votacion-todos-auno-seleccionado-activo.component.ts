@@ -1,3 +1,5 @@
+import { forEach } from '@angular/router/src/utils/collection';
+import { Equipo } from './../../../clases/Equipo';
 import { TablaEquipoJuegoDeVotacionTodosAUno } from './../../../clases/TablaEquipoJuegoDeVotacionTodosAUno';
 import { EquipoJuegoDeVotacionTodosAUno } from 'src/app/clases/EquipoJuegoDeVotacionTodosAUno';
 import { Component, OnInit } from '@angular/core';
@@ -6,7 +8,7 @@ import { SesionService, PeticionesAPIService, CalculosService, ComServerService 
 import Swal from 'sweetalert2';
 // Clases
 import { TablaAlumnoJuegoDeVotacionTodosAUno} from '../../../clases/index';
-import {JuegoDeVotacionTodosAUno, Alumno,Equipo, AlumnoJuegoDeVotacionTodosAUno} from '../../../clases/index';
+import {JuegoDeVotacionTodosAUno, Alumno, AlumnoJuegoDeVotacionTodosAUno} from '../../../clases/index';
 import { MatTableDataSource } from '@angular/material/table';
 import { Location } from '@angular/common';
 import { Howl } from 'howler';
@@ -35,7 +37,7 @@ export class JuegoDeVotacionTodosAUnoSeleccionadoActivoComponent implements OnIn
   displayedColumnsEquipos: string[] = ['posicion', 'nombreEquipo', 'miembros', 'nota', 'votos', 'cuantos'];
 
   interval;
-  alumnosQueYaHanVotado: Alumno[]=[];
+  alumnosQueYaHanVotado: any[]=[];
   equiposQueYaHanVotado: number[]=[];
   equiposConMiembros: any;
 
@@ -135,9 +137,9 @@ export class JuegoDeVotacionTodosAUnoSeleccionadoActivoComponent implements OnIn
 
   }
 
-
   AlumnoHaVotado(alumno: Alumno) {
-    return this.alumnosQueYaHanVotado.some (al => al.id === alumno.id);
+    console.log("lo ha encontrao", this.alumnosQueYaHanVotado.some (al => al.al.alumnoId === alumno.id) );
+    return this.alumnosQueYaHanVotado.some (al => al.al.alumnoId === alumno.id);
   }
 
   async AlumnosDelEquipo(equipo: Equipo) {
@@ -170,7 +172,7 @@ export class JuegoDeVotacionTodosAUnoSeleccionadoActivoComponent implements OnIn
         this.equiposConMiembros = [];
         this.equiposDelJuego.forEach (async eq => {
           const res = await this.peticionesAPI.DameAlumnosEquipo (eq.id).toPromise();
-          if (res !== undefined) {
+          if (res !== undefined || res.length!=0) {
             this.equiposConMiembros.push ({
               equipo: eq,
               miembros: res
@@ -219,6 +221,7 @@ export class JuegoDeVotacionTodosAUnoSeleccionadoActivoComponent implements OnIn
         }
       }*/
       this.TablaClasificacionTotal();
+      this.AlumnosQueYaHanVotado();
     });
 
   }
@@ -261,6 +264,18 @@ export class JuegoDeVotacionTodosAUnoSeleccionadoActivoComponent implements OnIn
     }
   }
 
+  AlumnosQueYaHanVotado(){
+    this.listaEquiposOrdenadaPorPuntos.forEach(eq=>{
+      for (let i =0; i<eq.VotosEmitidos.length; i++){
+        const al ={
+          equipo: eq.equipoId,
+          alumnoId: eq.VotosEmitidos[i].alumnoId
+        }
+        this.alumnosQueYaHanVotado.push({al});
+      }
+    } );
+  }
+
 
   VotacionFinalizada() {
     // Miro si todos han votado
@@ -281,8 +296,15 @@ export class JuegoDeVotacionTodosAUnoSeleccionadoActivoComponent implements OnIn
       return (cont === this.rankingEquiposJuegoDeVotacionTodosAUno.length);
     } else if (this.juegoSeleccionado.Modo === 'Equipos' && !this.juegoSeleccionado.VotanEquipos){
       console.log("Votan Equipos");
-      console.log(this.alumnosQueYaHanVotado.length === this.alumnosDelJuego.length);
-      return (this.alumnosQueYaHanVotado.length === this.alumnosDelJuego.length);
+      if(this.alumnosDelJuego && this.equiposDelJuego){
+      let totalvotes = this.alumnosDelJuego.length*(this.equiposDelJuego.length-1);
+      let cont = 0;
+      this.listaEquiposOrdenadaPorPuntos.forEach (eq => { cont=cont + eq.VotosEmitidos.length; });
+      console.log("entro votacionfinal novotaneq",cont,totalvotes);
+      return (cont === totalvotes);
+      }else{
+        return false;
+      }
     }else{
       console.log('error');
     }
@@ -334,11 +356,13 @@ export class JuegoDeVotacionTodosAUnoSeleccionadoActivoComponent implements OnIn
     // Primero vemos si todas las listas implicadas están preparadas
     if (this.equiposConMiembros && this.alumnosQueYaHanVotado) {
       const alumnosDelEquipo = this.equiposConMiembros.filter (eq => eq.equipo.id === equipo.id)[0].miembros;
-      console.log ('equipo ', equipo);
-      console.log ('alumnos del equipo ', alumnosDelEquipo);
-      console.log ('alumnos que ya han votado ', this.alumnosQueYaHanVotado);
-      const yaHanVotado = alumnosDelEquipo.filter(alumno => this.alumnosQueYaHanVotado.some(al => al.id === alumno.id));
-      console.log ('ya han votado ', yaHanVotado);
+      //let yaHanVotado: any[] =[];
+      /*for(let j=0; j<alumnosDelEquipo.length;j++){
+       if(this.alumnosQueYaHanVotado.some(al => al.al.alumnoId == alumnosDelEquipo[j].id)){
+          yaHanVotado.push(alumnosDelEquipo[j]);
+        }
+      }*/
+      const yaHanVotado = alumnosDelEquipo.filter(alumno => this.alumnosQueYaHanVotado.some(al => al.al.alumnoId === alumno.id));
       if (yaHanVotado) {
         return yaHanVotado.length + '/' + alumnosDelEquipo.length;
       } else {

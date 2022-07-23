@@ -4055,14 +4055,15 @@ for (let i = 0; i < listaEquiposOrdenadaPorPuntos.length; i++) {
   let elem2: Alumno[];
 
   if (juego.VotanEquipos){
-    if (listaEquiposOrdenadaPorPuntos[i].VotosEmitidos.length>0){
+    if (listaEquiposOrdenadaPorPuntos[i].VotosEmitidos.length == equiposDelJuego.length -1){
       elem.votado = true;
     }
   }else if(!juego.VotanEquipos){    
     this.peticionesAPI.DameAlumnosEquipo(equipoId)
     .subscribe(res =>{
       elem2=res;
-      if (listaEquiposOrdenadaPorPuntos[i].VotosEmitidos.length === elem2.length){
+      const numvotations= (elem2.length)*(equiposDelJuego.length - 1);
+      if (listaEquiposOrdenadaPorPuntos[i].VotosEmitidos.length == numvotations){
         elem.votado=true;
       }
     });
@@ -4092,7 +4093,30 @@ if (juego.VotanEquipos){
     }
   }
 }else if (!juego.VotanEquipos){
+  // reescribir, no guta
   for (let i = 0; i < listaEquiposOrdenadaPorPuntos.length; i++) {
+    if (listaEquiposOrdenadaPorPuntos[i].VotosEmitidos) {
+      // Este alumno ha emitido algunos votos
+      listaEquiposOrdenadaPorPuntos[i].VotosEmitidos.forEach (votoEmitido => {
+        // busco al alumno que ha recibido estos votos
+        // tslint:disable-next-line:no-shadowed-variable
+        const equipoVotado = rankingJuegoDeVotacion.filter (equipo => equipo.id === votoEmitido.equipoId)[0];
+        equipoVotado.votosRecibidos++;
+        // le asigno los votos que ha recibido para cada concepto
+        for (let j = 0; j < votoEmitido.votos.length; j++) {
+          equipoVotado.conceptos[j] = equipoVotado.conceptos[j] + votoEmitido.votos[j];
+        }
+  
+      });
+    }
+  }
+
+  console.log("asi quedo",rankingJuegoDeVotacion);
+
+
+    
+
+  /*for (let i = 0; i < listaEquiposOrdenadaPorPuntos.length; i++) {
 
     if (listaEquiposOrdenadaPorPuntos[i].VotosEmitidos) {
       // Este equipo ha emitido algunos votos
@@ -4100,37 +4124,38 @@ if (juego.VotanEquipos){
       // Asigno los puntos a los destinatorios
       // tslint:disable-next-line:prefer-for-of
       for (let j = 0; j < equipo.VotosEmitidos.length; j++) {
-        const votado = rankingJuegoDeVotacion.filter (eq => eq.id === equipo.VotosEmitidos[j].equipoId)[0];
+
+        const votado = rankingJuegoDeVotacion.filter (eq => eq.id === equipo.VotosEmitidos[j].equipoId);
         const num = listaEquiposOrdenadaPorPuntos[i].VotosEmitidos.filter (eq => eq.id === listaEquiposOrdenadaPorPuntos[i].VotosEmitidos[j].equipoId).length;
         votado.votosRecibidos= votado.votosRecibidos/num;
         console.log ("numero de votos por equipo" + num);
         for (let t= 0; t < equipo.VotosEmitidos[j].votos.length; t++) {
           votado.conceptos[j] = votado.conceptos[j] + equipo.VotosEmitidos[j].votos[t]/num;
         }
+      
       }
 
     }
-    }
+    }*/
   }
 
 
 
 // Para acabar calculo la nota parcial total  para cada alumno
-rankingJuegoDeVotacion.forEach (equipo => {
+  rankingJuegoDeVotacion.forEach (equipo => {
+    if (equipo.votosRecibidos === 0) {
+      equipo.nota = 0;
+    } else {
+      let nota = 0;
+      // tslint:disable-next-line:prefer-for-of
+      for (let i = 0; i < equipo.conceptos.length; i++) {
+        nota = nota + (equipo.conceptos[i] * juego.Pesos[i]) / 100;
+      }
+      equipo.nota = nota / equipo.votosRecibidos;
+    }
+  });
 
-if (equipo.votosRecibidos === 0) {
-equipo.nota = 0;
-} else {
-let nota = 0;
-// tslint:disable-next-line:prefer-for-of
-for (let i = 0; i < equipo.conceptos.length; i++) {
-nota = nota + (equipo.conceptos[i] * juego.Pesos[i]) / 100;
-}
-equipo.nota = nota / equipo.votosRecibidos;
-}
-});
-
-return rankingJuegoDeVotacion;
+  return rankingJuegoDeVotacion;
 }
 
 public PrepararTablaRankingEquiposVotacionTodosAUnoAcabado(listaEquiposOrdenadaPorPuntos: EquipoJuegoDeVotacionTodosAUno[],
