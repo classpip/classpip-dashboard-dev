@@ -13,11 +13,11 @@ import { Location } from '@angular/common';
 })
 export class JuegoDeVotacionTodosAUnoSeleccionadoInactivoComponent implements OnInit {
   juegoSeleccionado: any;
-  alumnosDelJuego: Alumno[];  
-  equiposDelJuego: Equipo[];
-  alumnosEquipo: Alumno[];
-  listaAlumnosOrdenadaPorPuntos: AlumnoJuegoDeVotacionTodosAUno[];
-  listaEquiposOrdenadaPorPuntos: EquipoJuegoDeVotacionTodosAUno[];
+  alumnosDelJuego: Alumno[]=[];  
+  equiposDelJuego: Equipo[]=[];
+  alumnosEquipo: Alumno[]=[];
+  listaAlumnosOrdenadaPorPuntos: AlumnoJuegoDeVotacionTodosAUno[]=[];
+  listaEquiposOrdenadaPorPuntos: EquipoJuegoDeVotacionTodosAUno[]=[];
   rankingIndividualJuegoDeVotacionTodosAUno: TablaAlumnoJuegoDeVotacionTodosAUno[] = [];
   rankingEquiposJuegoDeVotacionTodosAUno: TablaEquipoJuegoDeVotacionTodosAUno[] = [];
   dataSourceAlumno;
@@ -26,7 +26,9 @@ export class JuegoDeVotacionTodosAUnoSeleccionadoInactivoComponent implements On
   // tslint:disable-next-line:max-line-length
   displayedColumnsAlumnos: string[] = ['posicion', 'nombreAlumno', 'primerApellido', 'segundoApellido', 'votos',  'nota'];
   displayedColumnsEquipos: string[] = ['posicion', 'nombreEquipo', 'miembros', 'nota', 'votos'];
-  equiposConMiembros: any;
+  equiposConMiembros: any[]=[];
+
+  columnasListas =false;
 
   constructor(
     public sesion: SesionService,
@@ -56,6 +58,7 @@ export class JuegoDeVotacionTodosAUnoSeleccionadoInactivoComponent implements On
         // la nota final y no la nota del concepto, que es la misma que la nota final.
         this.juegoSeleccionado.Conceptos.forEach (concepto => this.displayedColumnsEquipos.push (concepto));
       }
+      this.columnasListas = true;
       this.EquiposDelJuego();
     }
   }
@@ -103,7 +106,7 @@ export class JuegoDeVotacionTodosAUnoSeleccionadoInactivoComponent implements On
 
         })
       
-        //this.RecuperarInscripcionesEquipoJuego();
+        this.RecuperarInscripcionesEquipoJuego();
       });  
     });
   
@@ -130,6 +133,7 @@ export class JuegoDeVotacionTodosAUnoSeleccionadoInactivoComponent implements On
     this.peticionesAPI.DameInscripcionesEquipoJuegoDeVotacionTodosAUno(this.juegoSeleccionado.id)
     .subscribe(inscripciones => {
       this.listaEquiposOrdenadaPorPuntos = inscripciones;
+      console.log("inscipciones",inscripciones);
       /*for(let i=0; i<this.listaEquiposOrdenadaPorPuntos.length; i++){
         if(this.listaEquiposOrdenadaPorPuntos[i]){
           for(let b=0; b<this.listaEquiposOrdenadaPorPuntos[i].VotosEmitidos[b].lenght; b++){

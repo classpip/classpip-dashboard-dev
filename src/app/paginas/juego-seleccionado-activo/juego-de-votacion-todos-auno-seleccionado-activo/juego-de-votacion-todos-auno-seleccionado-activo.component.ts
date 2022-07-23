@@ -21,9 +21,9 @@ import { Howl } from 'howler';
 export class JuegoDeVotacionTodosAUnoSeleccionadoActivoComponent implements OnInit {
   juegoSeleccionado: any;
   alumnosDelJuego: Alumno[]=[];
-  equiposDelJuego: Equipo[];
-  listaAlumnosOrdenadaPorPuntos: AlumnoJuegoDeVotacionTodosAUno[];
-  listaEquiposOrdenadaPorPuntos: EquipoJuegoDeVotacionTodosAUno[];
+  equiposDelJuego: Equipo[]=[];
+  listaAlumnosOrdenadaPorPuntos: AlumnoJuegoDeVotacionTodosAUno[]=[];
+  listaEquiposOrdenadaPorPuntos: EquipoJuegoDeVotacionTodosAUno[]=[];
   rankingIndividualJuegoDeVotacionTodosAUno: TablaAlumnoJuegoDeVotacionTodosAUno[] = [];
   rankingEquiposJuegoDeVotacionTodosAUno: TablaEquipoJuegoDeVotacionTodosAUno[] = [];
   datasourceAlumno;
@@ -39,7 +39,7 @@ export class JuegoDeVotacionTodosAUnoSeleccionadoActivoComponent implements OnIn
   interval;
   alumnosQueYaHanVotado: any[]=[];
   equiposQueYaHanVotado: number[]=[];
-  equiposConMiembros: any;
+  equiposConMiembros: any[]=[];
 
 
 
