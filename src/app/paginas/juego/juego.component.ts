@@ -2586,14 +2586,16 @@ export class JuegoComponent implements OnInit {
   }
 
   PonConcepto() {
-
-    this.listaConceptos.push({ nombre: this.myForm.value.NombreDelConcepto, peso: this.myForm.value.PesoDelConcepto });
-    this.dataSourceConceptos = new MatTableDataSource(this.listaConceptos);
-    let peso: number;
-    peso = Number(this.myForm.value.PesoDelConcepto);
-    this.totalPesos = this.totalPesos + peso;
-    console.log('total ' + this.totalPesos);
-
+    if(this.myForm.value.PesoDelConcepto!="" && !Number.isNaN(Number(this.myForm.value.PesoDelConcepto))){
+      this.listaConceptos.push({ nombre: this.myForm.value.NombreDelConcepto, peso: this.myForm.value.PesoDelConcepto });
+      this.dataSourceConceptos = new MatTableDataSource(this.listaConceptos);
+      let peso: number;
+      peso = Number(this.myForm.value.PesoDelConcepto);
+      this.totalPesos = this.totalPesos + peso;
+      console.log('total ' + this.totalPesos);
+    }else{
+      Swal.fire("Valor del concepto erróneo");
+    }
     this.myForm.reset();
 
   }
