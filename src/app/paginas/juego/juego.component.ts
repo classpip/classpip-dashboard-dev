@@ -2586,7 +2586,8 @@ export class JuegoComponent implements OnInit {
   }
 
   PonConcepto() {
-    if(this.myForm.value.PesoDelConcepto!="" && !Number.isNaN(Number(this.myForm.value.PesoDelConcepto))){
+
+    if(String(!Number.isNaN(Number(this.myForm.value.PesoDelConcepto)))){
       this.listaConceptos.push({ nombre: this.myForm.value.NombreDelConcepto, peso: this.myForm.value.PesoDelConcepto });
       this.dataSourceConceptos = new MatTableDataSource(this.listaConceptos);
       let peso: number;
