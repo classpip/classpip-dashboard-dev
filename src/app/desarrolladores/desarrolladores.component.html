@@ -41,6 +41,13 @@
       si hay alguna fila seleccionada.
       Hay un paginador para ver los elementos de la tabla de 5 en 5 o de 10 en 10
       o de 20 en 20 -->
+      <!-- ATENCION: la cuestión de la ordenación tiene un par de detalles importantes no obvios.
+      Por una parte, los nombres de las columnas tal y como se declaran en displayedColumns y matColumnDef
+      tienen que coincidir exactamente con los nombres de los campos en la lista que se quiere ordenar
+      (por ejemplo la columna para ordenar por el campo elemen.name se tiene que llamar 'name')
+      Por otro lado, en el componente ts la asignación del objeto sort (y del paginator) al dataSource se hace dentro
+      de un setTimeout para alterar el ciclo de ejecición y asegurar que se asigna cuando ya está definido.
+    -->
 
 
       <mat-tab label="Ejemplo de tabla">

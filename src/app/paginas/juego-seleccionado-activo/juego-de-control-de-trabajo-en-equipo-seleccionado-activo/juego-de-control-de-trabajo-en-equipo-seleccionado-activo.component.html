@@ -16,7 +16,7 @@
    
  <!-- El resto del componente es igual tanto si está activo como si está inactivo. -->
 
-  <div *ngIf = "tablaPreparada" style="width: 100%">
+  <div *ngIf = "tablaPreparada && datosPreparados" style="width: 100%">
     <i class="material-icons" style = "color:green"> done</i>  indica que todos los miembros del equipo han completado el control <br>
     <i class="material-icons" style = "color:red"> done</i>  indica que todos han completado el control y alguno ha recibido una calificación especialmente baja (menos de la mitad de lo correspondiente a un reparto equipobrado) <br>
     <i class="material-icons" style = "color: black"> hourglass_bottom</i>  indica que solo algunos miembros del equipo han completado el control <br>

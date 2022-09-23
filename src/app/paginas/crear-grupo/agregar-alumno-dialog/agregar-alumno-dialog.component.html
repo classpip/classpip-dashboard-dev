@@ -12,7 +12,7 @@
         </p>
     </div>
 
-    <table style="width: 100%; table-layout:fixed;"  *ngIf="alumnosDelGrupo[0]" mat-table [dataSource]="dataSourceAlumnosDelGrupo" class="example-container mat-elevation-z8">
+    <table style="width: 100%; table-layout:fixed;"  *ngIf="alumnosDelGrupo[0]" mat-table  [dataSource]="dataSourceAlumnosDelGrupo" class="example-container mat-elevation-z8">
 
       <!--- Note that these columns can be defined in any order.
             The actual rendered columns are set as a property on the row definition" -->
@@ -25,7 +25,7 @@
 
       <!-- Primer Apellido Column -->
       <ng-container matColumnDef="primerApellido">
-        <th mat-header-cell *matHeaderCellDef class="tituloColumnaTabla" style="width: 23%"> Primer Apellido </th>
+        <th mat-header-cell *matHeaderCellDef class="tituloColumnaTabla"  style="width: 23%"> Primer Apellido </th>
         <td mat-cell *matCellDef="let alumno"> {{alumno.PrimerApellido}} </td>
       </ng-container>
 
@@ -66,24 +66,31 @@
         </mat-form-field>
       </div>
 
+    <!-- <table mat-table [dataSource]="dataSource" matSort  style = 'width: 100%' class="mat-elevation-z8">
 
-    <table style="width: 100%; table-layout:fixed;"  *ngIf="misAlumnos[0]" mat-table [dataSource]="dataSourceMisAlumnos" class="example-container mat-elevation-z8">
+        <ng-container matColumnDef="nombre">
+          <th mat-header-cell class= "tituloColumnaTabla" *matHeaderCellDef mat-sort-header> Nombre del juego </th>
+          <td mat-cell style= "text-align: left" *matCellDef="let juego"> {{juego.nombre}} </td>
+        </ng-container> -->
+
+
+    <table style="width: 100%; table-layout:fixed;"  *ngIf="misAlumnos[0]" mat-table matSort [dataSource]="dataSourceMisAlumnos" class="example-container mat-elevation-z8">
 
       <!-- Nombre Alumno Column -->
-      <ng-container matColumnDef="nombre">
-        <th mat-header-cell *matHeaderCellDef class="tituloColumnaTabla" style="width: 23%"> Nombre </th>
+      <ng-container matColumnDef="Nombre">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header class="tituloColumnaTabla" style="width: 23%"> Nombre </th>
         <td mat-cell *matCellDef="let alumno"> {{alumno.Nombre}} </td>
       </ng-container>
 
       <!-- Primer Apellido Column -->
-      <ng-container matColumnDef="primerApellido">
-        <th mat-header-cell *matHeaderCellDef class="tituloColumnaTabla" style="width: 23%"> Primer Apellido </th>
+      <ng-container matColumnDef="PrimerApellido">
+        <th mat-header-cell *matHeaderCellDef class="tituloColumnaTabla" mat-sort-header style="width: 23%"> Primer Apellido </th>
         <td mat-cell *matCellDef="let alumno"> {{alumno.PrimerApellido}} </td>
       </ng-container>
 
       <!-- Segundo Apellido Column -->
-      <ng-container matColumnDef="segundoApellido">
-        <th mat-header-cell *matHeaderCellDef class="tituloColumnaTabla" style="width: 23%"> Segundo Apellido </th>
+      <ng-container matColumnDef="SegundoApellido">
+        <th mat-header-cell *matHeaderCellDef class="tituloColumnaTabla" mat-sort-header style="width: 23%"> Segundo Apellido </th>
         <td mat-cell *matCellDef="let alumno"> {{alumno.SegundoApellido}} </td>
       </ng-container>
 

@@ -3,22 +3,21 @@
 <mat-divider class="lineaDivisoria"></mat-divider>
 
 
-<form>
 
-  <table align = "center" *ngIf="listaGrupos;else Aviso_no_grupos" mat-table [dataSource]="listaGrupos" class="example-container mat-elevation-z8">
+  <table align = "center" *ngIf="listaGrupos;else Aviso_no_grupos" mat-table matSort [dataSource]="dataSource" class="example-container mat-elevation-z8">
 
     <!--- Note that these columns can be defined in any order.
           The actual rendered columns are set as a property on the row definition" -->
 
     <!-- Nombre Column -->
-    <ng-container matColumnDef="nombre">
-      <th mat-header-cell  *matHeaderCellDef class="tituloColumnaTabla"> Nombre  </th>
+    <ng-container matColumnDef="Nombre">
+      <th mat-header-cell  *matHeaderCellDef  mat-sort-header class="tituloColumnaTabla"> Nombre  </th>
       <td mat-cell style= "text-align: left"  *matCellDef="let grupo" (click)="EntrarGrupo(grupo)"> {{grupo.Nombre}} </td>
     </ng-container>
 
     <!-- Descripcion Column -->
-    <ng-container matColumnDef="descripcion">
-      <th mat-header-cell  *matHeaderCellDef class="tituloColumnaTabla"> Descripción </th>
+    <ng-container matColumnDef="Descripcion">
+      <th mat-header-cell  *matHeaderCellDef  mat-sort-header class="tituloColumnaTabla"> Descripción </th>
       <td mat-cell style= "text-align: left"  *matCellDef="let grupo" (click)="EntrarGrupo(grupo)"> {{grupo.Descripcion}} </td>
     </ng-container>
 
@@ -31,4 +30,3 @@
       <ng-template #Aviso_no_grupos> <div class="texto">Todavía no hay grupos creados</div></ng-template>
   </div>
 
-</form>

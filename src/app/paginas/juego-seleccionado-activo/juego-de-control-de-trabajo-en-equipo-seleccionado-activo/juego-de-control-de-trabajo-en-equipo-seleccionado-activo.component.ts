@@ -28,6 +28,7 @@ export class JuegoDeControlDeTrabajoEnEquipoSeleccionadoActivoComponent implemen
   respuestasEquipos;
   dataSourceControl;
   tablaControlPreparada = false;
+  datosPreparados = false;
   displayedColumnsControl: string[];
   nombresMiembros: string [];
   datosControl: any;
@@ -169,6 +170,7 @@ export class JuegoDeControlDeTrabajoEnEquipoSeleccionadoActivoComponent implemen
         }
       }
     }
+    this.datosPreparados = true;
   }
 
 

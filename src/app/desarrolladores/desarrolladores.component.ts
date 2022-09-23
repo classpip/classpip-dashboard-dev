@@ -1,20 +1,20 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 
-import {MatTableDataSource} from '@angular/material/table';
+import { MatTableDataSource } from '@angular/material/table';
 
 /* Necesario para controlar qué filas están seleccionadas */
-import {SelectionModel} from '@angular/cdk/collections';
+import { SelectionModel } from '@angular/cdk/collections';
 
 /* Imports necesarios para la ordenación y la paginación */
-import {MatPaginator} from '@angular/material/paginator';
-import {MatSort} from '@angular/material/sort';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatSort } from '@angular/material/sort';
 
 /* Necesario para el stepper */
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 // Elementos necesarios para el diálogo
 import { MatDialog, MatTabGroup } from '@angular/material';
-import {DialogoComponent} from './dialogo/dialogo.component';
+import { DialogoComponent } from './dialogo/dialogo.component';
 import Swal from 'sweetalert2';
 
 
@@ -48,22 +48,23 @@ export class DesarrolladoresComponent implements OnInit {
   selection = new SelectionModel<any>(true, []);
   /* Estos son los identificadores de las columnas de la tabla */
   displayedColumns: string[] = ['select', 'position', 'name', 'weight', 'symbol'];
- /* Los datos que se mostrarán en la tabla
- El campo opinion es para el ejemplo del acordeon */
- listaElementosQuimicos = [
-  {position: 1, name: 'Hydrogen', weight: 1.0079, symbol: 'H', opinion: 'No se'},
-  {position: 2, name: 'Helium', weight: 4.0026, symbol: 'He',  opinion: 'No se'},
-  {position: 3, name: 'Lithium', weight: 6.941, symbol: 'Li', opinion: 'No se'},
-  {position: 4, name: 'Beryllium', weight: 9.0122, symbol: 'Be', opinion: 'No se'},
-  {position: 5, name: 'Boron', weight: 10.811, symbol: 'B', opinion: 'No se'},
-  {position: 6, name: 'Carbon', weight: 12.0107, symbol: 'C', opinion: 'No se'},
-  {position: 7, name: 'Nitrogen', weight: 14.0067, symbol: 'N', opinion: 'No se'},
-  {position: 8, name: 'Oxygen', weight: 15.9994, symbol: 'O', opinion: 'No se'},
-  {position: 9, name: 'Fluorine', weight: 18.9984, symbol: 'F', opinion: 'No se'},
-  {position: 10, name: 'Neon', weight: 20.1797, symbol: 'Ne', opinion: 'No se'},
-];
+  /* Los datos que se mostrarán en la tabla
+  El campo opinion es para el ejemplo del acordeon */
+  listaElementosQuimicos = [
+    { position: 1, name: 'Hydrogen', weight: 1.0079, symbol: 'H', opinion: 'No se' },
+    { position: 2, name: 'Helium', weight: 4.0026, symbol: 'He', opinion: 'No se' },
+    { position: 3, name: 'Lithium', weight: 6.941, symbol: 'Li', opinion: 'No se' },
+    { position: 4, name: 'Beryllium', weight: 9.0122, symbol: 'Be', opinion: 'No se' },
+    { position: 5, name: 'Boron', weight: 10.811, symbol: 'B', opinion: 'No se' },
+    { position: 6, name: 'Carbon', weight: 12.0107, symbol: 'C', opinion: 'No se' },
+    { position: 7, name: 'Nitrogen', weight: 14.0067, symbol: 'N', opinion: 'No se' },
+    { position: 8, name: 'Oxygen', weight: 15.9994, symbol: 'O', opinion: 'No se' },
+    { position: 9, name: 'Fluorine', weight: 18.9984, symbol: 'F', opinion: 'No se' },
+    { position: 10, name: 'Neon', weight: 20.1797, symbol: 'Ne', opinion: 'No se' },
+  ];
 
-  dataSource = new MatTableDataSource (this.listaElementosQuimicos);
+
+  dataSource;
   // Para el stepper necesitamos dos formularios (uno para cada paso)
   firstFormGroup: FormGroup;
   secondFormGroup: FormGroup;
@@ -212,50 +213,50 @@ export class DesarrolladoresComponent implements OnInit {
   donut = {
 
     tooltip: {
-        trigger: 'item',
-        formatter: '{a} <br/>{b}: {c} ({d}%)'
+      trigger: 'item',
+      formatter: '{a} <br/>{b}: {c} ({d}%)'
     },
     legend: {
-        orient: 'vertical',
-        left: 10,
-        data: ['lunes', 'martes', 'miercoles', 'jueves', 'viernes']
+      orient: 'vertical',
+      left: 10,
+      data: ['lunes', 'martes', 'miercoles', 'jueves', 'viernes']
     },
     series: [
-        {
-            name: 'actividad',
-            type: 'pie',
-            radius: ['50%', '70%'],
-            avoidLabelOverlap: false,
-            label: {
-                show: false,
-                position: 'center'
-            },
-            emphasis: {
-                label: {
-                    show: true,
-                    fontSize: '30',
-                    fontWeight: 'bold'
-                }
-            },
-            labelLine: {
-                show: false
-            },
-            data: [
-                {value: 335, name: 'lunes'},
-                {value: 310, name: 'martes'},
-                {value: 234, name: 'miercoles'},
-                {value: 135, name: 'jueves'},
-                {value: 1548, name: 'viernes'}
-            ]
-        }
+      {
+        name: 'actividad',
+        type: 'pie',
+        radius: ['50%', '70%'],
+        avoidLabelOverlap: false,
+        label: {
+          show: false,
+          position: 'center'
+        },
+        emphasis: {
+          label: {
+            show: true,
+            fontSize: '30',
+            fontWeight: 'bold'
+          }
+        },
+        labelLine: {
+          show: false
+        },
+        data: [
+          { value: 335, name: 'lunes' },
+          { value: 310, name: 'martes' },
+          { value: 234, name: 'miercoles' },
+          { value: 135, name: 'jueves' },
+          { value: 1548, name: 'viernes' }
+        ]
+      }
     ]
-};
+  };
 
 
   constructor(
-                private formBuilder: FormBuilder,
-                public dialog: MatDialog
-   ) { }
+    private formBuilder: FormBuilder,
+    public dialog: MatDialog
+  ) { }
 
   /* Anotaciones necesarias para la ordenación y la paginación */
   @ViewChild(MatSort) sort: MatSort;
@@ -264,8 +265,12 @@ export class DesarrolladoresComponent implements OnInit {
   ngOnInit() {
 
     /* Instrucciones necesarias para la ordenación y la paginación */
-    this.dataSource.sort = this.sort;
-    this.dataSource.paginator = this.paginator;
+    this.dataSource = new MatTableDataSource(this.listaElementosQuimicos);
+    setTimeout(() => {
+      this.dataSource.sort = this.sort;
+      this.dataSource.paginator = this.paginator;
+    });
+   
 
     // Indico los campos que tendrá cada uno de los dos formularios que se usan en el stepper
     this.firstFormGroup = this.formBuilder.group({
@@ -280,7 +285,7 @@ export class DesarrolladoresComponent implements OnInit {
   }
 
 
-   // Esta es la función que se ejecuta cuando se selecciona un elemento
+  // Esta es la función que se ejecuta cuando se selecciona un elemento
   // con el selector. Simplemente construimos una frase que se mostrará en pantalla
   AccionConSeleccionado() {
     this.resultadoSelector = 'Has seleccionado: ' + this.elementoSeleccionado;
@@ -297,10 +302,10 @@ export class DesarrolladoresComponent implements OnInit {
     this.elegidosTabla = 'Estos son los elegidos: ';
     this.dataSource.data.forEach
       (row => {
-                if (this.selection.isSelected(row))  {
-                  this.elegidosTabla = this.elegidosTabla + row.name + ', ' ;
-                }
-            }
+        if (this.selection.isSelected(row)) {
+          this.elegidosTabla = this.elegidosTabla + row.name + ', ';
+        }
+      }
       );
   }
 
@@ -341,12 +346,12 @@ export class DesarrolladoresComponent implements OnInit {
   BotonPaso1() {
     if (this.firstFormGroup.value.nombre === '' || this.firstFormGroup.value.edad === '') {
       // Si alguno de los valores es igual a nada, entonces estará desactivado
-      console.log ('desactivo');
+      console.log('desactivo');
       this.botonPaso1Desactivado = true;
     } else {
       // Si ambos son diferentes a nulo, estará activado.
       this.botonPaso1Desactivado = false;
-      console.log ('activo');
+      console.log('activo');
     }
   }
 
@@ -371,9 +376,9 @@ export class DesarrolladoresComponent implements OnInit {
   }
   Mostrar() {
     this.resultadoStepper = 'Nombre: ' + this.persona.nombre +
-                            ', Edad: ' + this.persona.edad +
-                            ', Calle: ' + this.persona.calle +
-                            ', Ciudad: ' + this.persona.ciudad;
+      ', Edad: ' + this.persona.edad +
+      ', Calle: ' + this.persona.calle +
+      ', Ciudad: ' + this.persona.ciudad;
   }
 
   Reiniciar() {
@@ -386,21 +391,21 @@ export class DesarrolladoresComponent implements OnInit {
   DialogoParaCambiarOpinion(opinion: string, i: number): void {
 
     // Abrimos el dialogo y le pasamos como parametro la opinión actual
-      const dialogRef = this.dialog.open(DialogoComponent, {
-        height: '300px', // Tamaño del diálogo
-        data: {
-          op: opinion
-        }
-      });
+    const dialogRef = this.dialog.open(DialogoComponent, {
+      height: '300px', // Tamaño del diálogo
+      data: {
+        op: opinion
+      }
+    });
 
-      // Recogemos el resultado del dialogo, que es la nueva opinión, la guardamos en la
-      // lista y mostramos un mensaje informativo que dura 2 segundos
-      dialogRef.afterClosed().subscribe((nuevaOpinion: string) => {
-        console.log ('Nueva opinion: ' +  nuevaOpinion);
-        this.listaElementosQuimicos[i].opinion = nuevaOpinion;
-        Swal.fire('Opinion modificada', 'Nueva opinion modificada y guardada correctamente', 'success');
-      });
-    }
+    // Recogemos el resultado del dialogo, que es la nueva opinión, la guardamos en la
+    // lista y mostramos un mensaje informativo que dura 2 segundos
+    dialogRef.afterClosed().subscribe((nuevaOpinion: string) => {
+      console.log('Nueva opinion: ' + nuevaOpinion);
+      this.listaElementosQuimicos[i].opinion = nuevaOpinion;
+      Swal.fire('Opinion modificada', 'Nueva opinion modificada y guardada correctamente', 'success');
+    });
+  }
 
   Disabled() {
 
