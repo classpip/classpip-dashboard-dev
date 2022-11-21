@@ -1,3 +1,4 @@
+import { EquipoJuegoDeVotacionTodosAUno } from './../../clases/EquipoJuegoDeVotacionTodosAUno';
 import { Component, OnInit, ViewChild, Input } from '@angular/core';
 import { ThemePalette } from '@angular/material/core';
 import { SelectionModel } from '@angular/cdk/collections';
@@ -2445,7 +2446,7 @@ export class JuegoComponent implements OnInit {
 
   TipoDeVotacionSeleccionado(tipoVotacion: ChipColor) {
     // tslint:disable-next-line:max-line-length
-    if ((this.modoDeJuegoSeleccionado === 'Equipos') && ((tipoVotacion.nombre === 'Todos A Uno') || (tipoVotacion.nombre === 'Votar opciones'))) {
+    if ((this.modoDeJuegoSeleccionado === 'Equipos') &&  (tipoVotacion.nombre === 'Votar opciones')) {
       Swal.fire('Alerta', 'Aún no es posible ete tipo de juego de votación en EQUIPO', 'warning');
     } else {
       this.tipoDeVotacionSeleccionado = tipoVotacion.nombre;
@@ -2479,13 +2480,31 @@ export class JuegoComponent implements OnInit {
       this.autovotacion = false;
     }
     if (this.modoDeJuegoSeleccionado === 'Equipos') {
+      console.log("entramos quien vota");
       radio = document.getElementsByName('quien')[0] as HTMLInputElement;
+      console.log(radio);
       if (radio.checked ) {
         this.votanEquipos = true;
       } else {
         this.votanEquipos = false;
       }
+      console.log(this.votanEquipos);
     }
+
+  }
+
+  GuardarQuienVotaTodosAUno() {
+      console.log("entramos quien vota");
+      let radio = document.getElementsByName('quienTodosAUno')[0] as HTMLInputElement;
+      console.log(radio);
+      if (radio.checked ) {
+        this.votanEquipos = true;
+      } else {
+        this.votanEquipos = false;
+      }
+      console.log(this.votanEquipos);
+    
+
   }
 
   CrearJuegoDeVotacionUnoATodos() {
@@ -2568,13 +2587,16 @@ export class JuegoComponent implements OnInit {
 
   PonConcepto() {
 
-    this.listaConceptos.push({ nombre: this.myForm.value.NombreDelConcepto, peso: this.myForm.value.PesoDelConcepto });
-    this.dataSourceConceptos = new MatTableDataSource(this.listaConceptos);
-    let peso: number;
-    peso = Number(this.myForm.value.PesoDelConcepto);
-    this.totalPesos = this.totalPesos + peso;
-    console.log('total ' + this.totalPesos);
-
+    if(String(!Number.isNaN(Number(this.myForm.value.PesoDelConcepto)))){
+      this.listaConceptos.push({ nombre: this.myForm.value.NombreDelConcepto, peso: this.myForm.value.PesoDelConcepto });
+      this.dataSourceConceptos = new MatTableDataSource(this.listaConceptos);
+      let peso: number;
+      peso = Number(this.myForm.value.PesoDelConcepto);
+      this.totalPesos = this.totalPesos + peso;
+      console.log('total ' + this.totalPesos);
+    }else{
+      Swal.fire("Valor del concepto erróneo");
+    }
     this.myForm.reset();
 
   }
@@ -2621,7 +2643,8 @@ export class JuegoComponent implements OnInit {
       this.pesos,
       this.nombreDelJuego,
       false,
-      this.grupo.id);
+      this.grupo.id,
+      this.votanEquipos);
     console.log('voy a crear juego');
     console.log(juegoDeVotacion);
     this.peticionesAPI.CreaJuegoDeVotacionTodosAUno(juegoDeVotacion, this.grupo.id)
@@ -2656,7 +2679,17 @@ export class JuegoComponent implements OnInit {
               new AlumnoJuegoDeVotacionTodosAUno(this.alumnosGrupo[i].id, this.juego.id))
               .subscribe();
           }
-        }
+        }else {
+          console.log ('voy a inscribir a los equipos ', this.equiposGrupo);
+          // tslint:disable-next-line:prefer-for-of
+          for (let i = 0; i < this.equiposGrupo.length; i++) {
+            // tslint:disable-next-line:max-line-length
+            this.peticionesAPI.InscribeEquipoJuegoDeVotacionTodosAUno(
+              // tslint:disable-next-line:indent
+                new EquipoJuegoDeVotacionTodosAUno(this.equiposGrupo[i].id, this.juego.id))
+            .subscribe();
+          }
+      }
 
         Swal.fire('Juego de votación tipo Todos A Uno creado correctamente', ' ', 'success');
 

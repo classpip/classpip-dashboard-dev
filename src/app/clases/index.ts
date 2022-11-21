@@ -76,8 +76,10 @@ export * from './AlumnoJuegoDeVotacionTodosAUno';
 export * from './TablaEquipoJuegoDeVotacionUnoATodos';
 
 export * from './AlumnoJuegoDeVotacionTodosAUno';
+export * from './EquipoJuegoDeVotacionTodosAUno';
 export * from './JuegoDeVotacionTodosAUno';
 export * from './TablaAlumnoJuegoDeVotacionTodosAUno';
+export * from './TablaEquipoJuegoDeVotacionTodosAUno';
 export * from './Criterio';
 export * from './Rubrica';
 export * from './CuestionarioSatisfaccion';

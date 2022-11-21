@@ -951,6 +951,8 @@
                     </div>
                 </mat-step>
 
+
+
                 <!-- ULTIMO PASO: CREAR EL JUEGO DE VOTACION UNO A TODOS -->
                 <mat-step>
                   <ng-template matStepLabel><div>Finalizar</div></ng-template>
@@ -960,6 +962,8 @@
                   </div>
                 </mat-step>
               </div>
+
+              
               <div *ngIf="tipoDeVotacionSeleccionado === 'Todos A Uno'">
                 <mat-step>
                   <ng-template matStepLabel><div>Conceptos y pesos</div></ng-template>
@@ -1040,6 +1044,22 @@
                   </div>
 
                 </mat-step>
+                <div *ngIf = "modoDeJuegoSeleccionado === 'Equipos'">
+                <!-- Quién vota -->
+                  <mat-step>
+                    <ng-template matStepLabel><div>Quién</div></ng-template>
+                    <form  *ngIf = "modoDeJuegoSeleccionado === 'Equipos'">
+                      <label class = "LabelStepper">¿Quién vota?</label>
+                      <input type="radio" name="quienTodosAUno" checked > Votan los equipos (un miembro de cada equipo)<br>
+                      <input type="radio" name="quienTodosAUno" > Vota cada uno de los alumnos<br>
+                    </form>
+                    <div class="btnCambiarStep">
+                      <button type="button" class="btn Back" matStepperPrevious>Atrás</button>
+                      <button class="btn Next" (click) = "GuardarQuienVotaTodosAUno()" matStepperNext>Siguiente</button>
+                    </div>
+
+                  </mat-step>
+                </div>>
                 <!-- ULTIMO PASO: CREAR EL JUEGO DE VOTACION TODOS A UNO -->
                 <mat-step>
                     <ng-template matStepLabel><div>Finalizar</div></ng-template>
