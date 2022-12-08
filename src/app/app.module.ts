@@ -232,6 +232,10 @@ import { CrearFamiliaImagenesPerfilComponent } from './paginas/crear-familia-ima
 import { AsignarFamiliaImagenesPerfilComponent } from './paginas/mis-alumnos/asignar-familia-imagenes-perfil/asignar-familia-imagenes-perfil.component';
 import { MisFamiliasImagenesPerfilComponent } from './paginas/mis-familias-imagenes-perfil/mis-familias-imagenes-perfil.component';
 // tslint:disable-next-line:max-line-length
+
+import { CrearFamiliaImagenesPuzzleComponent } from './paginas/crear-familia-imagenes-puzzle/crear-familia-imagenes-puzzle.component';
+import { MisFamiliasImagenesPuzzleComponent } from './paginas/mis-familias-imagenes-puzzle/mis-familias-imagenes-puzzle.component';
+
 import { CrearCuestionarioSatisfaccionComponent } from './paginas/crear-cuestionario-satisfaccion/crear-cuestionario-satisfaccion.component';
 import {MisCuestionariosSatisfaccionComponent} from './paginas/mis-cuestionarios-satisfaccion/mis-cuestionarios-satisfaccion.component';
 import { AsignarCuestionarioSatisfaccionComponent } from './paginas/juego/asignar-cuestionario-satisfaccion/asignar-cuestionario-satisfaccion.component';
@@ -291,7 +295,12 @@ import { MisFamiliasmemoramaComponent } from './paginas/mis-familiasmemorama/mis
 import { JuegoDeMemoramaSeleccionadoInactivoComponent } from './paginas/juego-seleccionado-inactivo/juego-de-memorama-seleccionado-inactivo/juego-de-memorama-seleccionado-inactivo.component';
 import { JuegoDeMemoramaSeleccionadoActivoComponent } from './paginas/juego-seleccionado-activo/juego-de-memorama-seleccionado-activo/juego-de-memorama-seleccionado-activo.component';
 import { AsignacionFamiliaJuegoComponent } from './paginas/juego/asignacion-familia-juego/asignacion-familia-juego.component';
+import { AsignacionFamiliaJuegoPuzzleComponent } from './paginas/juego/asignacion-familia-juego-puzzle/asignacion-familia-juego-puzzle.component';
+import { AsignacionPreguntasJuegoPuzzleComponent } from './paginas/juego/asignacion-preguntas-juego-puzzle/asignacion-preguntas-juego-puzzle.component';
 
+
+import { JuegoDePuzzleSeleccionadoInactivoComponent } from './paginas/juego-seleccionado-inactivo/juego-de-puzzle-seleccionado-inactivo/juego-de-puzzle-seleccionado-inactivo.component';
+import { JuegoDePuzzleSeleccionadoActivoComponent } from './paginas/juego-seleccionado-activo/juego-de-puzzle-seleccionado-activo/juego-de-puzzle-seleccionado-activo.component';
 
 
 @NgModule({
@@ -421,6 +430,8 @@ import { AsignacionFamiliaJuegoComponent } from './paginas/juego/asignacion-fami
     CrearFamiliaImagenesPerfilComponent,
     AsignarFamiliaImagenesPerfilComponent,
     MisFamiliasImagenesPerfilComponent,
+    CrearFamiliaImagenesPuzzleComponent,
+    MisFamiliasImagenesPuzzleComponent,
     CrearCuestionarioSatisfaccionComponent,
     MisCuestionariosSatisfaccionComponent,
     AsignarCuestionarioSatisfaccionComponent,
@@ -466,7 +477,11 @@ import { AsignacionFamiliaJuegoComponent } from './paginas/juego/asignacion-fami
     MisFamiliasmemoramaComponent,
     JuegoDeMemoramaSeleccionadoInactivoComponent,
     JuegoDeMemoramaSeleccionadoActivoComponent,
-    AsignacionFamiliaJuegoComponent
+    AsignacionFamiliaJuegoComponent,
+    AsignacionFamiliaJuegoPuzzleComponent,
+    AsignacionPreguntasJuegoPuzzleComponent,
+    JuegoDePuzzleSeleccionadoInactivoComponent,
+    JuegoDePuzzleSeleccionadoActivoComponent
 
   ],
   imports: [

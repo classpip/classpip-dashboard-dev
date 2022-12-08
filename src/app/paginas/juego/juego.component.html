@@ -207,7 +207,6 @@
                     </div>
                     
                     <div class = "enFila" style = "height: 20%">
-
                       <div class = "enColumna" (click) = "TipoDeJuegoSeleccionado ('Juego De Evaluación')" style = "background: rgb(93, 199, 181); width:22%">
                         <div style = "height: 10%"><strong>Juego de Evaluación</strong></div>
                         <br>
@@ -236,10 +235,17 @@
                           <img src="../assets/memorama.png" class = "imagenPanelJuegos" />
                         </div>
                       </div>
-                
-
                     </div>
-              
+
+                    <div class = "enFila" style = "height: 20%">
+                      <div class = "enColumna" (click) = "TipoDeJuegoSeleccionado ('Juego De Puzzle')" style = "background: rgb(255, 8, 0);  width:22%">
+                        <div style = "height: 10%"><strong>Juego de Puzzle</strong></div>
+                        <br>
+                        <div style = "height: 40%" >
+                          <img src="../assets/puzzle.png" class = "imagenPanelJuegos" />
+                        </div>
+                      </div>
+                    </div>
                     
                   </div>
 
@@ -488,7 +494,6 @@
                     <ng-template matStepLabel>
                       <div>Familia</div>
                     </ng-template>
-
                 
                 <label class="LabelStepper" style = "font-size: larger; font-weight: bolder;">Selecciona una familia</label>
               
@@ -577,6 +582,76 @@
                 <div class="btnCambiarStep">
                   <button type="button" class="btn Back" matStepperPrevious>Atrás</button>
                   <button style="width: 60%" type="button" class="btn Aceptar" (click)="CrearJuegoDeMemorama();">Crear juego de Memorama</button>
+                </div>
+              </mat-step>
+            </div>
+
+            <!-- ////////////////////////////SI ESCOGEMOS EL JUEGO DE TIPO DE PUZZLE ////////////////////////////////-->
+
+            <div *ngIf="tipoDeJuegoSeleccionado === 'Juego De Puzzle' && tengoModo">
+              
+                  <!-- TERCER PASO: DIFICULTAD JUEGO -->
+
+              <mat-step>
+                <ng-template matStepLabel>Dificultad</ng-template>
+                <label class="LabelStepper" style = "font-size: larger; font-weight: bolder;">Selecciona una Dificultad:</label>
+                
+                <form action="">
+                  <input type="radio" id="radiopuz1" name="dificultad" value="facil" checked > Fácil (3x3)<br>
+                  <input type="radio" id="radiopuz2" name="dificultad" value="medio"> Medio (5x5)<br>
+                  <input type="radio" id="radiopuz3" name="dificultad" value="dificil"> Difícil (10x10)<br>
+                  <input type="radio" id="radiopuz4" name="dificultad" value="muy dificil"> Muy Difícil (25x25)
+                </form>
+
+                <div class="btnCambiarStep">
+                  <button type="button" class="btn Back" matStepperPrevious>Atrás</button>
+                  <button (click)="RegistraDificultadPuzzle()" type="button" class="btn Next" matStepperNext>Siguiente</button>
+                </div>
+
+              </mat-step>
+
+              <mat-step>
+                <ng-template matStepLabel>
+                  <div>Preguntas</div>
+                </ng-template>
+            
+                <label class="LabelStepper" style = "font-size: larger; font-weight: bolder;">Selecciona pregunta</label>
+              
+                <!-- Nos vamos al componente para asignar la familia -->
+                <app-asignacion-preguntas-juego-puzzle (emisorFamilia)="RecibePreguntas ($event)"></app-asignacion-preguntas-juego-puzzle>
+                <span *ngIf="tengoPregunta" style="font-weight: bold;color:green;"> Has elegido ...
+                  Titulo de la pregunta: {{preguntaSeleccionada.Titulo}}
+                </span>
+                <div class="btnCambiarStep">
+                  <button type="button" class="btn Back" matStepperPrevious>Atrás</button>
+                  <button type="button" class="btn Next" matStepperNext>Siguiente</button>
+                </div>
+              </mat-step>
+
+              <mat-step>
+                <ng-template matStepLabel>
+                  <div>Imagen</div>
+                </ng-template>
+            
+                <label class="LabelStepper" style = "font-size: larger; font-weight: bolder;">Selecciona una imagen</label>
+              
+                <!-- Nos vamos al componente para asignar la familia -->
+                <app-asignacion-familia-juego-puzzle (emisorFamilia)="RecibeImagenes ($event)"></app-asignacion-familia-juego-puzzle>
+                <span *ngIf="tengoImagen" style="font-weight: bold;color:green;"> Has elegido ...
+                  Imagen: {{imagenSeleccionada.NombreFamilia}} ... {{modoDeJuegoSeleccionado}}
+                </span>
+                <div class="btnCambiarStep">
+                  <button type="button" class="btn Back" matStepperPrevious>Atrás</button>
+                  <button type="button" class="btn Next" matStepperNext>Siguiente</button>
+                </div>
+              </mat-step>
+
+              <!-- ULTIMO PASO: CREACIÓN DEl JUEGO DE PUZZLE-->
+              <mat-step>
+                <ng-template matStepLabel>Finalizar</ng-template>
+                <div class="btnCambiarStep">
+                  <button type="button" class="btn Back" matStepperPrevious>Atrás</button>
+                  <button style="width: 60%" type="button" class="btn Aceptar" (click)="CrearJuegoDePuzzle();">Crear juego de Puzzle</button>
                 </div>
               </mat-step>
             </div>
@@ -951,8 +1026,6 @@
                     </div>
                 </mat-step>
 
-
-
                 <!-- ULTIMO PASO: CREAR EL JUEGO DE VOTACION UNO A TODOS -->
                 <mat-step>
                   <ng-template matStepLabel><div>Finalizar</div></ng-template>
@@ -962,8 +1035,6 @@
                   </div>
                 </mat-step>
               </div>
-
-              
               <div *ngIf="tipoDeVotacionSeleccionado === 'Todos A Uno'">
                 <mat-step>
                   <ng-template matStepLabel><div>Conceptos y pesos</div></ng-template>

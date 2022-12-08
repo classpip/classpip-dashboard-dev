@@ -108,7 +108,6 @@ import { JuegoSeleccionadoPreparadoComponent } from './paginas/juego-seleccionad
 // componentes para avatares
 
 import { CrearFamiliaAvataresComponent } from './paginas/crear-familia-avatares/crear-familia-avatares.component';
-
 import { MisFamiliasAvataresComponent } from './paginas/mis-familias-avatares/mis-familias-avatares.component';
 
 // tslint:disable-next-line:max-line-length
@@ -133,6 +132,9 @@ import { MisRubricasComponent } from './paginas/mis-rubricas/mis-rubricas.compon
 
 import {CrearFamiliaImagenesPerfilComponent} from './paginas/crear-familia-imagenes-perfil/crear-familia-imagenes-perfil.component';
 import {MisFamiliasImagenesPerfilComponent} from './paginas/mis-familias-imagenes-perfil/mis-familias-imagenes-perfil.component';
+
+import {CrearFamiliaImagenesPuzzleComponent} from './paginas/crear-familia-imagenes-puzzle/crear-familia-imagenes-puzzle.component';
+import {MisFamiliasImagenesPuzzleComponent} from './paginas/mis-familias-imagenes-puzzle/mis-familias-imagenes-puzzle.component';
 
 // tslint:disable-next-line:max-line-length
 import { CrearCuestionarioSatisfaccionComponent } from './paginas/crear-cuestionario-satisfaccion/crear-cuestionario-satisfaccion.component';
@@ -360,6 +362,9 @@ const routes: Routes = [
   { path: 'inicio/:id/crearFamiliaDeImagenesDePerfil', component: CrearFamiliaImagenesPerfilComponent},
   { path: 'inicio/:id/misFamiliasDeImagenesDePerfil', component: MisFamiliasImagenesPerfilComponent},
 
+  // Familias de imagenes de puzzle
+  { path: 'inicio/:id/crearFamiliaDeImagenesDePuzzle', component: CrearFamiliaImagenesPuzzleComponent},
+  { path: 'inicio/:id/misFamiliasDeImagenesDePuzzle', component: MisFamiliasImagenesPuzzleComponent},
 
   // Familias para memorama
   // tslint:disable-next-line:max-line-length

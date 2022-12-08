@@ -10,7 +10,7 @@ import { Grupo, Equipo, Juego, Alumno, Nivel, TablaAlumnoJuegoDePuntos, TablaHis
          AlumnoJuegoDeCompeticionLiga, AlumnoJuegoDeCompeticionFormulaUno, EquipoJuegoDeCompeticionFormulaUno,
          // tslint:disable-next-line:max-line-length
          TablaClasificacionJornada, TablaPuntosFormulaUno, AlumnoJuegoDeVotacionUnoATodos, TablaAlumnoJuegoDeVotacionUnoATodos,
-         AlumnoJuegoDeVotacionTodosAUno, TablaAlumnoJuegoDeVotacionTodosAUno, JuegoDeVotacionTodosAUno, FamiliaAvatares, Pregunta, EquipoJuegoDeCuestionario, TablaEquipoJuegoDeCuestionario, Evento, Profesor, Punto, TablaEquipoJuegoDeVotacionTodosAUno} from '../clases/index';
+         AlumnoJuegoDeVotacionTodosAUno, TablaAlumnoJuegoDeVotacionTodosAUno, JuegoDeVotacionTodosAUno, FamiliaAvatares, Pregunta, EquipoJuegoDeCuestionario, TablaEquipoJuegoDeCuestionario, Evento, Profesor, Punto} from '../clases/index';
 import { MatTableDataSource } from '@angular/material/table';
 import { Observable } from 'rxjs';
 import { analyzeAndValidateNgModules } from '@angular/compiler';
@@ -27,7 +27,8 @@ import { AlumnoJuegoDeEvaluacion } from '../clases/AlumnoJuegoDeEvaluacion';
 import { EquipoJuegoDeEvaluacion } from '../clases/EquipoJuegoDeEvaluacion';
 import { EquipoJuegoDeVotacionUnoATodos } from '../clases/EquipoJuegoDeVotacionUnoATodos';
 import { TablaEquipoJuegoDeVotacionUnoATodos } from '../clases/TablaEquipoJuegoDeVotacionUnoATodos';
-
+import { AlumnoJuegoDePuzzle } from '../clases/AlumnoJuegoDePuzzle';
+import { TablaAlumnoJuegoDePuzzle } from '../clases/TablaAlumnoJuegoDePuzzle';
 import { TablaAlumnoJuegoDeMemorama } from '../clases/TablaAlumnoJuegoDeMemorama';
 
 
@@ -113,6 +114,8 @@ private async EliminaJuegos(): Promise<any> {
           this.EliminarJuegoDeVotacionUnoATodos (juego);
         } else if (juego.Tipo === 'Juego De Votación Todos A Uno') {
           this.EliminarJuegoDeVotacionTodosAUno (juego);
+        } else if (juego.Tipo === 'Juego De Puzzle') {
+          this.EliminarJuegoDePuzzle (juego);
         } else if (juego.Tipo === 'Juego De Votación Votar opciones') {
           this.EliminarJuegoDeVotacionAOpciones (juego);
         } else if (juego.Tipo === 'Juego De Evaluacion') {
@@ -123,8 +126,7 @@ private async EliminaJuegos(): Promise<any> {
           this.EliminarJuegoDeCuestionarioDeSatisfaccion (juego);
         } else if (juego.Tipo === 'Juego De Memorama') {
           this.EliminarJuegoDeMemorama (juego);
-        }
-        
+        } 
       });
     } else {
       console.log ('No hay juegos');
@@ -146,6 +148,23 @@ public async EliminarJuegoDeMemorama(juego: any) {
   // Ahora borramos el juego
   await this.peticionesAPI.BorraJuegoDeMemorama (juego.id).toPromise();
   console.log("JUEGO DE MEMORAMA ELIMINADO");
+}
+
+public async EliminarJuegoDePuzzle(juego: any) {
+  // Primero borramos las inscripciones de alumnos 
+  if (juego.Modo === 'Individual') {
+
+    const inscripciones = await this.peticionesAPI.DamealumnosjuegoPuzzle(juego.id).toPromise();
+
+    for (let i = 0; i < inscripciones.length ; i++ ) {
+      console.log("Inscripciones",inscripciones);
+
+      await this.peticionesAPI.BorraInscripcionAlumnoJuegoDePuzzle(inscripciones[i].id).toPromise();
+    }
+  } 
+  // Ahora borramos el juego
+  await this.peticionesAPI.BorraJuegoDePuzzle (juego.id).toPromise();
+  console.log("JUEGO DE PUZZLE ELIMINADO");
 }
 
 public async EliminarJuegoDePuntos(juego: any) {
@@ -397,17 +416,15 @@ public async EliminarJuegoDeVotacionTodosAUno(juego: any) {
       await this.peticionesAPI.BorraInscripcionAlumnoJuegoDeVotacionTodosAUno (inscripciones[i].id).toPromise();
     }
   } else {
-
     inscripciones = await this.peticionesAPI.DameInscripcionesEquipoJuegoDeVotacionTodosAUno(juego.id).toPromise();
 
     // tslint:disable-next-line:prefer-for-of
     for (let i = 0; i < inscripciones.length ; i++ ) {
       await this.peticionesAPI.BorraInscripcionEquipoJuegoDeVotacionTodosAUno (inscripciones[i].id).toPromise();
-    }
+  }
   }
   await this.peticionesAPI.BorraJuegoDeVotacionTodosAUno (juego.id).toPromise();
 }
-
 public async EliminarJuegoDeVotacionAOpciones(juego: any) {
   let inscripciones;
   if (juego.Modo === 'Individual') {
@@ -594,6 +611,21 @@ private async EliminarMatriculas(): Promise<any> {
       console.log ('No hay juegos de MEMORAMA en el grupo: ' + grupoID);
     }
 
+    console.log ('vamos a por el juego de Puzzle: ' + grupoID);
+    try {
+      juegos = await this.peticionesAPI.DameJuegoDePuzzle(grupoID).toPromise();
+      console.log('He recibido los juegos de PUZZLE');
+      console.log(juegos);
+      for (let i = 0; i < juegos.length; i++) {
+        if (juegos[i].JuegoActivo === true) {
+          juegosActivos.push(juegos[i]);
+        } else {
+          juegosInactivos.push(juegos[i]);
+        }
+      }
+    } catch {
+      console.log ('No hay juegos de PUZZLE en el grupo: ' + grupoID);
+    }
 
     console.log ('vamos a por los juegos de competicion liga del grupo: ' + grupoID);
     try {
@@ -902,7 +934,7 @@ private async EliminarMatriculas(): Promise<any> {
     }
 }
 
-public PrepararTablaRankingIndividualMemorama(listaAlumnosOrdenadaPorPuntos, alumnosDelJuego){
+  public PrepararTablaRankingIndividualMemorama(listaAlumnosOrdenadaPorPuntos, alumnosDelJuego) {
 
     const rankingJuegoDePuntos: any [] = [];
 
@@ -915,6 +947,26 @@ public PrepararTablaRankingIndividualMemorama(listaAlumnosOrdenadaPorPuntos, alu
 
 
       rankingJuegoDePuntos[i] = new TablaAlumnoJuegoDeMemorama (i + 1, alumno.Nombre, alumno.PrimerApellido, alumno.SegundoApellido,
+        listaAlumnosOrdenadaPorPuntos[i].puntuacion,listaAlumnosOrdenadaPorPuntos[i].tiempo);
+
+    }
+
+    return (rankingJuegoDePuntos);
+  }
+
+  public PrepararTablaRankingIndividualPuzzle(listaAlumnosOrdenadaPorPuntos, alumnosDelJuego) {
+
+    const rankingJuegoDePuntos: any [] = [];
+
+    for (let i = 0; i < listaAlumnosOrdenadaPorPuntos.length; i++) {
+
+      let alumno: Alumno;
+      const alumnoId = listaAlumnosOrdenadaPorPuntos[i].alumnoId;
+
+      alumno = alumnosDelJuego.filter(res => res.id === alumnoId)[0];
+
+
+      rankingJuegoDePuntos[i] = new TablaAlumnoJuegoDePuzzle (i + 1, alumno.Nombre, alumno.PrimerApellido, alumno.SegundoApellido,
         listaAlumnosOrdenadaPorPuntos[i].puntuacion,listaAlumnosOrdenadaPorPuntos[i].tiempo);
 
     }
