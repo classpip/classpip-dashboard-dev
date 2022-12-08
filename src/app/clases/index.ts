@@ -114,3 +114,8 @@ export * from './Familia';
 export * from './JuegoMemorama';
 export * from './EquipoJuegoDeMemorama';
 export * from './TablaAlumnoJuegoDeMemorama';
+
+export * from './AlumnoJuegoDePuzzle';
+export * from './JuegoPuzzle';
+export * from './TablaAlumnoJuegoDePuzzle';
+export * from './FamiliaDeImagenesDePuzzle';

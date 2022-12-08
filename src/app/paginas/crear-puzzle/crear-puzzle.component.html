@@ -1,0 +1,92 @@
+<div class="contenedor">
+    <mat-tab-group>
+      <mat-tab label="Crear Puzzle">
+  
+        <!-- STEPPER -->
+  
+          <mat-card class="panel" style= "width: 100%">
+  
+            <mat-card-content>
+  
+            <mat-horizontal-stepper #linearHorizontalStepper="matHorizontalStepper" [linear]="true" #stepper>
+  
+  
+              <!-- PRIMER PASO -->
+              <mat-step [stepControl]="myForm">
+  
+              <form [formGroup]="myForm">
+                <ng-template matStepLabel>Nombre e imagen</ng-template>
+                <mat-form-field>
+                  <mat-label>Nombre</mat-label>
+                  <input matInput formControlName="nombrePuzzle" required>
+                  <mat-error>Este campo es obligatorio</mat-error>
+                </mat-form-field>
+  
+                <div>
+                  
+                    <input #fileImagenPuzzle id = "fileImagenPuzzle" type="file" accept= 'image/*' (change)="ExaminarImagenPuzzle($event)" style="display:none">
+                    <img class="imagenPuzzle" *ngIf="imagenPuzzle" mat-card-image [src]="imagenPuzzle"> 
+                    <button (click) = "fileImagenPuzzle.click()" type="button" class="btn Añadir">
+                      Añadir Imagen<i class="material-icons">add_photo_alternate</i>
+                    </button>
+                </div>
+  
+                <div class="btnCambiarStep">
+                  <button *ngIf="imagenPuzzle && myForm.value.nombrePuzzle" class="btn Next"matStepperNext>Siguiente</button>
+                </div>
+              </form>
+              </mat-step>
+  
+                <!-- AÑADIR AYUDA -->
+              <mat-step>
+              <ng-template matStepLabel>Relaciones</ng-template>
+              <div>
+                <label class = "LabelStepper">Indica si quieres que el puzzle tenga ayuda:</label>
+  
+                <form action="">
+                  <input id="ayuda" type="radio" name="caras" checked > Con ayuda <br>
+                  <input id="sinayuda" type="radio" name="caras" > Sin ayuda
+                </form>
+  
+              </div>
+  
+              <div class="btnCambiarStep">
+                <button type="button" class="btn Back" matStepperPrevious>Atrás</button>
+                <button (click)="RegistrarAyuda()"  type="button" class="btn Next" matStepperNext>Siguiente</button>
+              </div>
+  
+              </mat-step>
+              
+              <!-- PASO FINALIZAR SI NO SE HA ESCOGIDO AYUDA -->
+                <mat-step *ngIf="!ayuda">
+                    <ng-template matStepLabel>Finalizar</ng-template>
+                    <div>
+                        <p> Partida creada correctamente. </p>
+                        <p> Haga click en "Finalizar" para registrar la partida.</p>
+                    </div>
+  
+                    <div class="btnCambiarStep">
+                        <button  type="button" class="btn Back"  matStepperPrevious>Atrás</button>
+                        <button  type="button" class="btn Aceptar" (click) = "RegistrarFamiliaCreadaPasoAPaso()">Finalizar</button>
+                    </div>
+                </mat-step>
+              <!-- SIGUIENTE PASO SI HAY QUE ESCOGER PREGUNTA -->
+              <mat-step *ngIf="ayuda">
+                <ng-template matStepLabel>Registrar Preguntas</ng-template>
+                <div>
+                  <p> Escoge las preguntas . </p>
+                </div>
+  
+                <div class="btnCambiarStep">
+                  <button  type="button" class="btn Back"  matStepperPrevious>Atrás</button>
+                  <button (click)="RegistrarFamiliaCreadaPasoAPaso()"  matStepperNext type="button" class="btn Next">Registrar familia</button>
+                </div>
+              </mat-step>
+  
+            </mat-horizontal-stepper>
+          </mat-card-content>
+        </mat-card>
+
+    </mat-tab-group>
+  </div>
+  

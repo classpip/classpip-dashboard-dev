@@ -13,7 +13,7 @@ import { Profesor, Grupo, Alumno, Matricula, Juego, Punto, Nivel, AlumnoJuegoDeP
         EquipoJuegoDeCompeticionFormulaUno, AlumnoJuegoDeCompeticionTorneo, EquipoJuegoDeCompeticionTorneo, SesionClase, AsistenciaClase, FamiliaAvatares, JuegoDeAvatar,
         AlumnoJuegoDeAvatar, JuegoDeCuestionario, AlumnoJuegoDeCuestionario, AlumnoJuegoDeCuento, JuegoDeCuento,
         RespuestaJuegoDeCuestionario, JuegoDeVotacionUnoATodos, AlumnoJuegoDeVotacionUnoATodos, Rubrica,
-        JuegoDeVotacionTodosAUno, AlumnoJuegoDeVotacionTodosAUno, FamiliaDeImagenesDePerfil,
+        JuegoDeVotacionTodosAUno, AlumnoJuegoDeVotacionTodosAUno, FamiliaDeImagenesDePerfil, FamiliaDeImagenesDePuzzle,
         CuestionarioSatisfaccion, JuegoDeCuestionarioSatisfaccion, AlumnoJuegoDeCuestionarioSatisfaccion,
         JuegoDeEncuestaRapida, JuegoDeVotacionRapida, JuegoDeCuestionarioRapido, JuegoDeCogerTurnoRapido, JuegoDePuntos, AlumnoJuegoDeControlDeTrabajoEnEquipo, EquipoJuegoDeCuestionario, Evento, JuegoDeControlDeTrabajoEnEquipo, JuegoDeVotacionAOpciones, AlumnoJuegoDeVotacionAOpciones, Familia} from '../clases/index';
 
@@ -39,6 +39,8 @@ import { AlumnoJuegoDeMemorama } from '../clases/AlumnoJuegoDeMemorama';
 import { EquipoJuegoDeMemorama } from '../clases/EquipoJuegoDeMemorama';
 import { JuegoMEMORAMA } from '../clases/JuegoMemorama';
 import{Carta} from 'src/app/clases/Carta';
+import { AlumnoJuegoDePuzzle } from '../clases/AlumnoJuegoDePuzzle';
+import { JuegoPUZZLE } from '../clases/JuegoPuzzle';
 
 @Injectable({
   providedIn: 'root'
@@ -93,6 +95,8 @@ export class PeticionesAPIService {
   private APIUrlEquipoJuegoDeCompeticionTorneo = this.host + ':3000/api/EquiposJuegoDeCompeticionTorneo';
   private APIUrlJornadasJuegoDeCompeticionTorneo = this.host + ':3000/api/JornadasDeCompeticionTorneo';
   private APIUrlJuegoDeGeocaching = this.host + ':3000/api/JuegosDeGeocaching';
+  private APIUrlJuegoDePuzzle = this.host + ':3000/api/juegosDePuzzle';
+  private APIUrlAlumnoJuegoDePuzzle = this.host + ':3000/api/AlumnosJuegoDePuzzle';
 
   private APIUrlAsistenciasClase = this.host + ':3000/api/AsistenciasClase';
   private APIUrlSesionesClase = this.host + ':3000/api/SesionesClase';
@@ -155,6 +159,9 @@ export class PeticionesAPIService {
   private APIUrlFamiliasDeImagenesDePerfil = this.host + ':3000/api/familiasImagenesPerfil';
 
   private APIUrlImagenesPerfil = this.host + ':3000/api/imagenes/ImagenesPerfil';
+
+  private APIUrlImagenesPuzzle = this.host + ':3000/api/imagenes/ImagenesPuzzle';
+  private APIUrlFamiliasDeImagenesDePuzzle = this.host + ':3000/api/familiasImagenesPuzzle';
 
   private APIUrlCuestionariosSatisfaccion = this.host + ':3000/api/cuestionariosSatisfaccion';
 
@@ -1329,7 +1336,7 @@ public BorraInscripcionEquipoJuegoDeCompeticionTorneo(inscripcionId: number) {
   public DameJuegoDeCuestionario(grupoId: number): Observable<Juego[]> {
     return this.http.get<Juego[]>(this.APIUrlGrupos + '/' + grupoId + '/juegosDeCuestionario');
   }
-
+  
  
   public ModificaJuegoDeCuestionario(juego: JuegoDeCuestionario, id: number): Observable<JuegoDeCuestionario> {
     // tslint:disable-next-line:max-line-length
@@ -1854,7 +1861,7 @@ public ModificaInscripcionEquipoJuegoDeVotacionUnoATodos(inscripcion: EquipoJueg
 
   ////////////////////////////////// GESTION VOTACION TODOS A UNO EQUIPOS /////////////////////////////////////////////////////////
 
-  public DameEquiposJuegoDeVotacionTodosAUno(juegoId: number): Observable<Equipo[]> {
+c DameEquiposJuegoDeVotacionTodosAUno(juegoId: number): Observable<Equipo[]> {
     return this.http.get<Equipo[]>(this.APIUrlJuegoDeVotacionTodosAUno + '/' + juegoId + '/equipos');
   }
 
@@ -1966,30 +1973,65 @@ public ModificaInscripcionAlumnoJuegoDeVotacionAOpciones(inscripcion: AlumnoJueg
     return this.http.put<Rubrica>(this.APIURLRubricas, rubrica);
   }
 
+   // Imagenes de puzzle
+
+   public PonImagenPuzzle(formData: FormData): Observable<any> {
+    return this.http.post<any>(this.APIUrlImagenesPuzzle + '/upload', formData);
+  }
+
+  public BorraImagenPuzzle(ImagenPuzzle: string): Observable<any> {
+
+    return this.http.delete<any>(this.APIUrlImagenesPuzzle + '/files/' + ImagenPuzzle);
+  }
+
+  public DameFamiliasDeImagenesDePuzzleProfesor(profesorId: number): Observable<FamiliaDeImagenesDePuzzle[]> {
+    return this.http.get<FamiliaDeImagenesDePuzzle[]>(this.APIUrlProfesores + '/' + profesorId + '/familiasImagenesDePuzzle');
+  }
+
+  public DameFamiliasDePreguntasDePuzzleProfesor(profesorId: number): Observable<Pregunta[]> {
+    return this.http.get<Pregunta[]>(this.APIUrlProfesores + '/' + profesorId + '/preguntas');
+  }
+
+  public DameFamiliasDeImagenesDePuzzlePublicas(): Observable<FamiliaDeImagenesDePuzzle[]> {
+    return this.http.get<FamiliaDeImagenesDePuzzle[]>(this.APIUrlFamiliasDeImagenesDePuzzle
+      + '?filter[where][Publica]=true');
+  }
+
+  public CreaFamiliaDeImagenesDePuzzle(familia: FamiliaDeImagenesDePuzzle, profesorId: number): Observable<FamiliaDeImagenesDePuzzle> {
+    // tslint:disable-next-line:max-line-length
+    return this.http.post<FamiliaDeImagenesDePuzzle>(this.APIUrlProfesores + '/' + profesorId + '/familiasImagenesDePuzzle', familia);
+  }
+
+  public BorrarFamiliaDeImagenesDePuzzle(familiaId: number) {
+    // tslint:disable-next-line:max-line-length
+    return this.http.delete(this.APIUrlFamiliasDeImagenesDePuzzle + '/' + familiaId);
+  }
+
+  public ModificaFamiliaDeImagenesDePuzzle(familia: FamiliaDeImagenesDePuzzle): Observable<FamiliaDeImagenesDePuzzle> {
+    return this.http.put<FamiliaDeImagenesDePuzzle>(this.APIUrlFamiliasDeImagenesDePuzzle + '/' + familia.id, familia);
+  }
+
 
   // Imagenes de perfil
 
   public PonImagenPerfil(formData: FormData): Observable<any> {
+    console.log(formData)
     return this.http.post<any>(this.APIUrlImagenesPerfil + '/upload', formData);
   }
-
 
   public BorraImagenPerfil(ImagenPerfil: string): Observable<any> {
 
     return this.http.delete<any>(this.APIUrlImagenesPerfil + '/files/' + ImagenPerfil);
   }
 
-
   public DameFamiliasDeImagenesDePerfilProfesor(profesorId: number): Observable<FamiliaDeImagenesDePerfil[]> {
     return this.http.get<FamiliaDeImagenesDePerfil[]>(this.APIUrlProfesores + '/' + profesorId + '/familiasImagenesDePerfil');
   }
-
 
   public DameFamiliasDeImagenesDePerfilPublicas(): Observable<FamiliaDeImagenesDePerfil[]> {
     return this.http.get<FamiliaDeImagenesDePerfil[]>(this.APIUrlFamiliasDeImagenesDePerfil
       + '?filter[where][Publica]=true');
   }
-
 
   public CreaFamiliaDeImagenesDePerfil(familia: FamiliaDeImagenesDePerfil, profesorId: number): Observable<FamiliaDeImagenesDePerfil> {
     // tslint:disable-next-line:max-line-length
@@ -2004,7 +2046,6 @@ public ModificaInscripcionAlumnoJuegoDeVotacionAOpciones(inscripcion: AlumnoJueg
   public ModificaFamiliaDeImagenesDePerfil(familia: FamiliaDeImagenesDePerfil): Observable<FamiliaDeImagenesDePerfil> {
     return this.http.put<FamiliaDeImagenesDePerfil>(this.APIUrlFamiliasDeImagenesDePerfil + '/' + familia.id, familia);
   }
-
 
   //////////////////////////// GESTION DE CUESTIONARIOS DE SATISFACCION /////////////////////////////
   public CreaCuestionarioSatisfaccion(cuestionario: CuestionarioSatisfaccion, profesorId: number): Observable<CuestionarioSatisfaccion> {
@@ -2271,7 +2312,6 @@ public ModificaInscripcionAlumnoJuegoDeVotacionAOpciones(inscripcion: AlumnoJueg
 
   }
   public CrearJuegoCuento(juego: JuegoDeCuento, grupoId: number) {
-
     return this.http.post<JuegoDeCuento>(this.APIUrlGrupos + '/' + grupoId + '/JuegoDeCuento', juego);
   }
 
@@ -2611,11 +2651,46 @@ public ModificaInscripcionAlumnoJuegoDeVotacionAOpciones(inscripcion: AlumnoJueg
 
   }
 
+  ///////////////////////////////////////////// GESTION JUEGO PUZZLE //////////////////////////////////////////////
   
+  public DameJuegoDePuzzle(juegoDePuzzleID: number): Observable<Juego[]> {
+    return this.http.get<Juego[]>(this.APIUrlGrupos + '/' + juegoDePuzzleID + '/juegosDePuzzle');
+  }
 
+  public DamealumnosjuegoPuzzle(juegoid:number): Observable<any>{
+    console.log(this.APIUrlAlumnoJuegoDePuzzle + '?filter[where][juegoDePuzzleId]='+juegoid);
+    return this.http.get<any>(this.APIUrlAlumnoJuegoDePuzzle + '?filter[where][juegoDePuzzleId]='+juegoid);
+  }
 
+  public BorraInscripcionAlumnoJuegoDePuzzle(inscripcionId: number): any {
+    return this.http.delete<any>(this.APIUrlAlumnoJuegoDePuzzle + '/' + inscripcionId);
+  }
 
+  public BorraJuegoDePuzzle(juegoDePuzzleId: number): Observable<Juego> {
+    return this.http.delete<Juego>(this.APIUrlJuegoDePuzzle + '/' + juegoDePuzzleId);
+  }
 
+  public CreaJuegoDePuzzle(juego: JuegoPUZZLE, grupoId: number): Observable<JuegoPUZZLE> {
+    
+    return this.http.post<JuegoPUZZLE>(this.APIUrlGrupos + '/' + grupoId + '/juegosDePuzzle', juego);
+  }
 
+  public InscribeAlumnoJuegoDePuzzle(alumnoJuegoDePuzzle: AlumnoJuegoDePuzzle) {
+    return this.http.post<AlumnoJuegoDePuzzle>(this.APIUrlAlumnoJuegoDePuzzle, alumnoJuegoDePuzzle);
+  }
 
+  public DameInfoAlumnosJuegoDePuzzle(juegoDePuzzleId: number): Observable<any> {
+
+    return this.http.get<any>(this.APIUrlJuegoDePuzzle + '/' + juegoDePuzzleId + '/alumnos');
+  
+  }
+
+  public CambiaEstadoJuegoDePuzzle(juego: Juego): Observable<Juego> {
+    // tslint:disable-next-line:max-line-length
+    return this.http.put<Juego>(this.APIUrlJuegoDePuzzle + '/' + juego.id , juego);
+  }
+
+  public ModificaInscripcionAlumnoJuegoDePuzzle(inscripcion: AlumnoJuegoDePuzzle): Observable<AlumnoJuegoDePuzzle> {
+    return this.http.put<AlumnoJuegoDePuzzle>(this.APIUrlAlumnoJuegoDePuzzle + '/' + inscripcion.id, inscripcion);
+  }
 }
