@@ -34,7 +34,7 @@
     "cors": "^2.8.5",
     "echarts": "^4.9.0",
     "ej-angular2": "^18.3.35",
-    "express": "^4.17.1",
+    "express": "^4.17.3",
     "hammerjs": "^2.0.8",
     "howler": "^2.2.1",
     "html2canvas": "^1.0.0-rc.7",
